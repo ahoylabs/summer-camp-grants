@@ -52,7 +52,6 @@ export const Airdrop: FC = () => {
         associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
       })
       .preInstructions([initializeIx])
-      .rpc()
   }
 
   useEffect(() => {

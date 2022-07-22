@@ -11,6 +11,7 @@ export const getGrantProgram = (
   connection: Connection,
 ) => {
   const provider = new AnchorProvider(connection, wallet, {})
+  console.log(NEXT_PUBLIC_PROGRAM_ID)
 
   const program = new Program(
     IDL,

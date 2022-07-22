@@ -1,6 +1,10 @@
 export ANCHOR_VERSION=0.24.2
-export GRANT_PROGRAM_ID=HqyLxiVTCmsGvQSAddwFMDBimV5nszGBpZSzeJWj3nZ
+export GRANT_PROGRAM_ID=Aam6DmZoo1qeJstSrmspbGgWh4E6WjBzWEyUFaoFjTQh
+
 # Actual USDC address for use on mainnet: EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v
+
 # spl-token-faucet (https://github.com/credix-finance/spl-token-faucet) mint
+
 # address for testing: Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr
+
 export USDC_MINT_ADDR=Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr
