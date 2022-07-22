@@ -3,7 +3,8 @@ mod consts;
 use anchor_lang::prelude::*;
 use anchor_spl::{
     associated_token::AssociatedToken,
-    token::{Mint, Token, TokenAccount},
+    token,
+    token::{Mint, Token, TokenAccount, Transfer},
 };
 use solana_security_txt::security_txt;
 
@@ -61,6 +62,26 @@ pub mod ahoy_grants {
 
         Ok(())
     }
+
+    // Pay a submission for a grant. ie select a submission as having won all or part of the grant.
+    pub fn pay_submission(ctx: Context<PaySubmission>, amount: u64) -> Result<()> {
+        let submission = &mut ctx.accounts.submission;
+
+        let transfer_cpi_accounts = Transfer {
+            from: ctx.accounts.wallet.to_account_info(),
+            to: ctx.accounts.pay_to.to_account_info(),
+            authority: ctx.accounts.wallet_owner.to_account_info(),
+        };
+        let transfer_cpi_ctx = CpiContext::new(
+            ctx.accounts.token_program.to_account_info(),
+            transfer_cpi_accounts,
+        );
+        token::transfer(transfer_cpi_ctx, amount)?;
+
+        submission.amount_won += amount;
+
+        Ok(())
+    }
 }
 
 #[derive(Accounts)]
@@ -99,6 +120,24 @@ pub struct Submit<'info> {
     pub associated_token_program: Program<'info, AssociatedToken>,
     pub system_program: Program<'info, System>,
     pub rent: Sysvar<'info, Rent>,
+}
+
+#[derive(Accounts)]
+pub struct PaySubmission<'info> {
+    #[account(has_one = wallet)]
+    pub grant: Account<'info, Grant>,
+    #[account(mut, has_one = grant, has_one = pay_to)]
+    pub submission: Account<'info, Submission>,
+    #[account(
+        mut,
+        token::mint = consts::USDC_MINT_ADDR,
+        token::authority = wallet_owner,
+    )]
+    pub wallet: Account<'info, TokenAccount>,
+    pub wallet_owner: Signer<'info>,
+    #[account(mut, token::mint = consts::USDC_MINT_ADDR)]
+    pub pay_to: Account<'info, TokenAccount>,
+    pub token_program: Program<'info, Token>,
 }
 
 #[account]
