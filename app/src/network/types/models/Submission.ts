@@ -1,15 +1,15 @@
 import { PublicKey } from '@solana/web3.js'
 
-import { AhoyGrants } from '../../../../contract/target/types/ahoy_grants'
-import { ContentSHA256 } from './ContentSHA256'
-import { TypedProgram } from './typedProgram'
+import { AhoyGrants } from '../../../../../contract/target/types/ahoy_grants'
+import { ContentSHA256 } from '../ContentSHA256'
+import { TypedProgram } from '../typedProgram'
 
 export interface Submission {
   contentSha256: ContentSHA256
   publicKey: PublicKey
 }
 
-type AnchorSubmission = Awaited<
+export type AnchorSubmission = Awaited<
   ReturnType<TypedProgram<AhoyGrants>['account']['submission']['fetch']>
 >
 

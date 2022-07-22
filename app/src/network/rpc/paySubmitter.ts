@@ -3,8 +3,8 @@ import { AnchorWallet } from '@solana/wallet-adapter-react'
 import { PublicKey } from '@solana/web3.js'
 
 import { connection } from '../connection'
-import { fetchUSDCAssociatedTokenAccount } from '../fetch/fetchUSDCAssociatedTokenAccount'
 import { getGrantProgram } from '../getGrantProgram'
+import { getUSDCAssociatedTokenAddress } from '../getUSDCAssociatedTokenAddress'
 import { convertUSDCToUnits } from './../convertUSDC'
 
 interface Args {
@@ -23,7 +23,7 @@ export const paySubmitter = async ({
   wallet,
 }: Args) => {
   const program = getGrantProgram(wallet, connection)
-  const associatedTokenAddress = await fetchUSDCAssociatedTokenAccount(
+  const associatedTokenAddress = await getUSDCAssociatedTokenAddress(
     wallet.publicKey,
   )
 

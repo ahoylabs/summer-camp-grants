@@ -1,9 +1,9 @@
 import { PublicKey } from '@solana/web3.js'
 import Decimal from 'decimal.js-light'
 
-import { AhoyGrants } from '../../../../contract/target/types/ahoy_grants'
-import { ContentSHA256 } from './ContentSHA256'
-import { TypedProgram } from './typedProgram'
+import { AhoyGrants } from '../../../../../contract/target/types/ahoy_grants'
+import { ContentSHA256 } from '../ContentSHA256'
+import { TypedProgram } from '../typedProgram'
 
 export interface Grant {
   contentSha256: ContentSHA256

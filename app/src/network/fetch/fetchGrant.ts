@@ -3,7 +3,7 @@ import { PublicKey } from '@solana/web3.js'
 
 import { connection } from '../connection'
 import { getGrantProgram } from '../getGrantProgram'
-import { formatGrant } from '../types/Grant'
+import { formatGrant } from '../types/models/Grant'
 
 interface Args {
   grantPubkey: PublicKey

@@ -3,8 +3,8 @@ import { PublicKey } from '@solana/web3.js'
 
 import { connection } from '../connection'
 import { getGrantProgram } from '../getGrantProgram'
-import { Submission } from '../types/Submission'
-import { formatSubmission } from './../types/Submission'
+import { Submission } from '../types/models/Submission'
+import { formatSubmission } from '../types/models/Submission'
 
 interface Args {
   grantAccount: PublicKey

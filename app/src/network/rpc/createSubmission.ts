@@ -3,10 +3,10 @@ import { AnchorWallet } from '@solana/wallet-adapter-react'
 import { Keypair, PublicKey } from '@solana/web3.js'
 
 import { connection } from '../connection'
-import { fetchUSDCAssociatedTokenAccount } from '../fetch/fetchUSDCAssociatedTokenAccount'
 import { getGrantProgram } from '../getGrantProgram'
+import { getUSDCAssociatedTokenAddress } from '../getUSDCAssociatedTokenAddress'
 import { ContentSHA256 } from '../types/ContentSHA256'
-import { formatSubmission } from '../types/Submission'
+import { formatSubmission } from '../types/models/Submission'
 import { NEXT_PUBLIC_USDC_MINT_ADDR } from './../../__generated__/_env'
 
 interface Args {
@@ -22,7 +22,7 @@ export const createSubmission = async ({
 }: Args) => {
   const program = getGrantProgram(wallet, connection)
   const submissionKeypair = Keypair.generate()
-  const associatedUSDCAccount = await fetchUSDCAssociatedTokenAccount(
+  const associatedUSDCAccount = await getUSDCAssociatedTokenAddress(
     wallet.publicKey,
   )
 
@@ -40,7 +40,7 @@ export const createSubmission = async ({
     .signers([submissionKeypair])
     .rpc()
 
-  const submissionAccount = await program.account.grant.fetch(
+  const submissionAccount = await program.account.submission.fetch(
     submissionKeypair.publicKey,
   )
 
