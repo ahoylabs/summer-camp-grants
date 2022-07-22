@@ -1,8 +1,3 @@
-import { Program } from '@project-serum/anchor'
-
-interface Args {
-  program: Program
-  submissionAddress: string
-}
+interface Args {}
 
 export const fetchSubmission = () => {}
