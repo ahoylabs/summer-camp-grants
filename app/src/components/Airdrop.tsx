@@ -5,15 +5,13 @@ import {
 } from '@solana/spl-token'
 import { useAnchorWallet } from '@solana/wallet-adapter-react'
 import { PublicKey } from '@solana/web3.js'
-import { FC, useEffect, useState } from 'react'
+import { FC } from 'react'
 
 import { connection } from '../network/connection'
-import { fetchUSDCBalance } from '../network/fetch/fetchUSDCBalance'
 import { getAirdropProgram } from '../network/getAirdropProgram'
 
 export const Airdrop: FC = () => {
   const wallet = useAnchorWallet()
-  const [usdcBalance, setUsdcBalance] = useState(0)
 
   const airdrop = async () => {
     if (!wallet) return
@@ -30,7 +28,7 @@ export const Airdrop: FC = () => {
     )
 
     // get 10 SOL for fees
-    await connection.requestAirdrop(wallet.publicKey, 10_000_000_000)
+    await connection.requestAirdrop(wallet.publicKey, 1_000_000_000)
 
     // initialize faucet
     const initializeIx = await program.methods
@@ -52,21 +50,13 @@ export const Airdrop: FC = () => {
         associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
       })
       .preInstructions([initializeIx])
+      .rpc()
   }
-
-  useEffect(() => {
-    ;(async () => {
-      if (!wallet) return
-      const usdcBalance = await fetchUSDCBalance(wallet?.publicKey)
-      setUsdcBalance(usdcBalance)
-    })()
-  }, [wallet])
 
   return (
     <>
-      <div>USDC Balance: {usdcBalance}</div>
       <button onClick={airdrop} style={{ border: '1px solid black' }}>
-        Airdrop 1000 Fake USDC and 10 SOL
+        Airdrop 50 Fake USDC and 1 SOL
       </button>
     </>
   )

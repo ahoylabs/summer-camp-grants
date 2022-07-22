@@ -6,6 +6,7 @@ import { NextPage } from 'next'
 import { Airdrop } from '../../components/Airdrop'
 import { Layout } from '../../components/Layout'
 import { Spacers } from '../../components/Spacers'
+import { useConnectedWalletBalance } from '../../hooks/useConnectedWalletBalance'
 import { createGrant } from '../../network/rpc/createGrant'
 import { ContentSHA256 } from '../../network/types/ContentSHA256'
 
@@ -15,9 +16,12 @@ interface FormValuesSchema {
 
 const CreateGrantPage: NextPage = () => {
   const wallet = useAnchorWallet()
+  const [solBalance, usdcBalance] = useConnectedWalletBalance()
   return (
     <Layout>
       <Airdrop />
+      <div>SOL: {solBalance}</div>
+      <div>USDC: {usdcBalance}</div>
       <Spacers.Vertical._16px />
       <Formik
         initialValues={

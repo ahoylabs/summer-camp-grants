@@ -7,7 +7,12 @@ import { convertUnitsToUSDC } from './../convertUSDC'
 
 export const fetchUSDCBalance = async (owner: PublicKey): Promise<number> => {
   const associatedTokenAddress = await getUSDCAssociatedTokenAddress(owner)
-  const account = await getAccount(connection, associatedTokenAddress)
-  const balanceUSDC = convertUnitsToUSDC(account.amount)
-  return balanceUSDC
+  try {
+    const account = await getAccount(connection, associatedTokenAddress)
+    const balanceUSDC = convertUnitsToUSDC(account.amount)
+    return balanceUSDC
+  } catch (error) {
+    console.warn('associated token account not found')
+    return 0
+  }
 }

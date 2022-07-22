@@ -1,7 +1,7 @@
 [features]
 seeds = false
 [programs.localnet]
-ahoy_grants = "1212121212121212121212121212121212121212121"
+ahoy_grants = "Aam6DmZoo1qeJstSrmspbGgWh4E6WjBzWEyUFaoFjTQh"
 
 [registry]
 url = "https://anchor.projectserum.com"

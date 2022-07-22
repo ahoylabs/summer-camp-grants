@@ -1,10 +1,13 @@
 import { AnchorProvider, Program } from '@project-serum/anchor'
 import { AnchorWallet } from '@solana/wallet-adapter-react'
-import { Connection } from '@solana/web3.js'
+import { Connection, PublicKey } from '@solana/web3.js'
 
 import { IDL, SplTokenFaucet } from '../__generated__/spl_token_faucet'
-import { NEXT_PUBLIC_USDC_MINT_ADDR } from './../__generated__/_env'
 import { TypedProgram } from './types/typedProgram'
+
+export const localFaucetProgram = new PublicKey(
+  '4sN8PnN2ki2W4TFXAfzR645FWs8nimmsYeNtxM8RBK6A',
+)
 
 export const getAirdropProgram = (
   wallet: AnchorWallet,
@@ -14,7 +17,7 @@ export const getAirdropProgram = (
 
   const program = new Program(
     IDL,
-    NEXT_PUBLIC_USDC_MINT_ADDR,
+    localFaucetProgram,
     provider,
   ) as TypedProgram<SplTokenFaucet>
 
