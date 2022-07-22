@@ -2,11 +2,11 @@ import { AnchorWallet } from '@solana/wallet-adapter-react'
 import { Keypair } from '@solana/web3.js'
 import Decimal from 'decimal.js-light'
 
+import { fetchUSDCAssociatedTokenAccount } from '../fetch/fetchUSDCAssociatedTokenAccount'
 import { getGrantProgram } from '../getGrantProgram'
 import { ContentSHA256 } from '../types/ContentSHA256'
 import { Grant } from '../types/Grant'
 import { connection } from './../connection'
-import { fetchAssociatedUSDCAccount } from './../fetch/fetchAssociatedUSDCAccount'
 
 interface Args {
   contentSha256: ContentSHA256
@@ -20,7 +20,7 @@ export const createGrant = async ({
   const program = getGrantProgram(wallet, connection)
   const grantKeypair = Keypair.generate()
 
-  const associatedTokenAddress = await fetchAssociatedUSDCAccount(
+  const associatedTokenAddress = await fetchUSDCAssociatedTokenAccount(
     wallet.publicKey,
   )
 

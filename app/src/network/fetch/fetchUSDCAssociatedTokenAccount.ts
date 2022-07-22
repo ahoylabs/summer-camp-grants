@@ -1,9 +1,9 @@
 import { getAssociatedTokenAddress } from '@solana/spl-token'
 import { PublicKey } from '@solana/web3.js'
 
-import { NEXT_PUBLIC_USDC_MINT_ADDR } from './../../__generated__/_env'
+import { NEXT_PUBLIC_USDC_MINT_ADDR } from '../../__generated__/_env'
 
-export const fetchAssociatedUSDCAccount = async (
+export const fetchUSDCAssociatedTokenAccount = async (
   owner: PublicKey,
 ): Promise<PublicKey> => {
   return await getAssociatedTokenAddress(
