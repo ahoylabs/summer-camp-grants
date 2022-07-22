@@ -11,6 +11,7 @@ import {
   ASSOCIATED_TOKEN_PROGRAM_ID,
 } from "@solana/spl-token";
 import { airdrop10Sol, createContentSHA } from "./utils/testingUtils";
+import { assert } from "chai";
 
 const SPL_TOKEN_FAUCET_PROGRAM_ID = new anchor.web3.PublicKey(
   "4sN8PnN2ki2W4TFXAfzR645FWs8nimmsYeNtxM8RBK6A"
@@ -19,8 +20,6 @@ const SPL_TOKEN_FAUCET_PROGRAM_ID = new anchor.web3.PublicKey(
 const provider = anchor.AnchorProvider.env();
 // Configure the client to use the local cluster.
 anchor.setProvider(provider);
-
-console.log("SplTokenFaucetIDL", SplTokenFaucetIDL);
 
 const program = anchor.workspace.AhoyGrants as Program<AhoyGrants>;
 const tokenFaucet = new Program<SplTokenFaucet>(
@@ -113,5 +112,45 @@ describe("ahoy-grants", () => {
       })
       .signers([submitter, submissionKeypair])
       .rpc();
+
+    const submission = await program.account.submission.fetch(
+      submissionKeypair.publicKey
+    );
+    console.log("created submission:", submission);
+  });
+
+  it("pay submission", async () => {
+    await program.methods
+      .paySubmission(new anchor.BN(12_000_000))
+      .accounts({
+        grant: grantKeypair.publicKey,
+        submission: submissionKeypair.publicKey,
+        wallet: grantCreatorATA,
+        walletOwner: grantCreator.publicKey,
+        payTo: submitterATA,
+      })
+      .signers([grantCreator])
+      .rpc();
+
+    const submission = await program.account.submission.fetch(
+      submissionKeypair.publicKey
+    );
+    console.log("paid submission:", submission);
+    assert.equal(
+      submission.amountWon.toString(),
+      new anchor.BN(12_000_000).toString()
+    );
+
+    const submitterAccount = await token.getAccount(
+      provider.connection,
+      submitterATA
+    );
+    assert.equal(submitterAccount.amount, BigInt(12_000_000));
+
+    const grantCreatorAccount = await token.getAccount(
+      provider.connection,
+      grantCreatorATA
+    );
+    assert.equal(grantCreatorAccount.amount, BigInt(30_000_000));
   });
 });
