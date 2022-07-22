@@ -1,7 +1,10 @@
 mod consts;
 
 use anchor_lang::prelude::*;
-use anchor_spl::token::TokenAccount;
+use anchor_spl::{
+    associated_token::AssociatedToken,
+    token::{Mint, Token, TokenAccount},
+};
 use solana_security_txt::security_txt;
 
 declare_id!("1212121212121212121212121212121212121212121");
@@ -30,6 +33,32 @@ pub mod ahoy_grants {
         let clock = Clock::get()?;
         grant.created_at = clock.unix_timestamp;
 
+        msg!(
+            "Created grant {:?} by: {:?}",
+            grant.key(),
+            ctx.accounts.wallet_owner.key()
+        );
+
+        Ok(())
+    }
+
+    // Create a submission entry for a given grant
+    pub fn submit(ctx: Context<Submit>, content_sha256: [u8; 32]) -> Result<()> {
+        let submission = &mut ctx.accounts.submission;
+        submission.grant = ctx.accounts.grant.key();
+        submission.content_sha256 = content_sha256;
+        submission.pay_to = ctx.accounts.pay_to.key();
+        submission.amount_won = 0;
+        let clock = Clock::get()?;
+        submission.submitted_at = clock.unix_timestamp;
+
+        msg!(
+            "submission: {:?} pay_to_owner {:?} for grant {:?}",
+            submission.key(),
+            ctx.accounts.pay_to_owner.key(),
+            ctx.accounts.grant.key()
+        );
+
         Ok(())
     }
 }
@@ -45,6 +74,31 @@ pub struct Create<'info> {
     #[account(mut)]
     pub payer: Signer<'info>,
     pub system_program: Program<'info, System>,
+}
+
+#[derive(Accounts)]
+pub struct Submit<'info> {
+    pub grant: Account<'info, Grant>,
+    #[account(init, payer = payer, space = Submission::LEN)]
+    pub submission: Account<'info, Submission>,
+    #[account(address = consts::USDC_MINT_ADDR)]
+    pub mint: Account<'info, Mint>,
+    #[account(
+        init,
+        payer = payer,
+        associated_token::mint = mint,
+        associated_token::authority = pay_to_owner,
+    )]
+    pub pay_to: Account<'info, TokenAccount>,
+    /// CHECK: this is just included so we can automatically create an associated token account for
+    /// the submitter if they do not already have one.
+    pub pay_to_owner: UncheckedAccount<'info>,
+    #[account(mut)]
+    pub payer: Signer<'info>,
+    pub token_program: Program<'info, Token>,
+    pub associated_token_program: Program<'info, AssociatedToken>,
+    pub system_program: Program<'info, System>,
+    pub rent: Sysvar<'info, Rent>,
 }
 
 #[account]
@@ -66,4 +120,28 @@ impl Grant {
         + 32 // wallet
         + 8 // initial_amount
         + 8; // created_at
+}
+
+#[account]
+#[derive(Default)]
+pub struct Submission {
+    // Grant this submission is target at
+    pub grant: Pubkey,
+    // Hash of the submission content
+    pub content_sha256: [u8; 32],
+    // USDC_MINT_ADDR that grant funds will be payed to if this submission is selected as a winner.
+    pub pay_to: Pubkey,
+    // Record of amount this submission has won from the grant. 0 if they have not (yet) won
+    // anything.
+    pub amount_won: u64,
+    pub submitted_at: i64,
+}
+
+impl Submission {
+    const LEN: usize = 8 // Anchor discriminator
+        + 32 // grant
+        + 32 // content_sha256
+        + 32 // pay_to
+        + 8 // amount_won
+        + 8; // submitted_at
 }

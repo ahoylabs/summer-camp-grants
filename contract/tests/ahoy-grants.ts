@@ -30,13 +30,17 @@ const tokenFaucet = new Program<SplTokenFaucet>(
 );
 
 const grantKeypair = anchor.web3.Keypair.generate();
+const submissionKeypair = anchor.web3.Keypair.generate();
 const testContentSha256 = createContentSHA("Test grant content");
+const testSubmissionSha256 = createContentSHA("Test submission content");
 
 let mintPda: anchor.web3.PublicKey;
 let mintPdaBump: number;
 
 const grantCreator = anchor.web3.Keypair.generate();
 let grantCreatorATA: anchor.web3.PublicKey;
+const submitter = anchor.web3.Keypair.generate();
+let submitterATA: anchor.web3.PublicKey;
 
 before("initialize accounts", async () => {
   [mintPda, mintPdaBump] = await anchor.web3.PublicKey.findProgramAddress(
@@ -47,6 +51,10 @@ before("initialize accounts", async () => {
   grantCreatorATA = await token.getAssociatedTokenAddress(
     mintPda,
     grantCreator.publicKey
+  );
+  submitterATA = await token.getAssociatedTokenAddress(
+    mintPda,
+    submitter.publicKey
   );
 
   // Initialize simulated USDC faucet (which will also create the mint)
@@ -60,6 +68,7 @@ before("initialize accounts", async () => {
 
   // Get some SOL for fees and rent
   await airdrop10Sol(grantCreator.publicKey, provider.connection);
+  await airdrop10Sol(submitter.publicKey, provider.connection);
 
   // 42 simulated USDC
   await tokenFaucet.methods
@@ -69,9 +78,6 @@ before("initialize accounts", async () => {
       payer: grantCreator.publicKey,
       mint: mintPda,
       destination: grantCreatorATA,
-      tokenProgram: TOKEN_PROGRAM_ID,
-      associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
-      rent: anchor.web3.SYSVAR_RENT_PUBKEY,
     })
     .signers([grantCreator])
     .rpc();
@@ -92,5 +98,20 @@ describe("ahoy-grants", () => {
 
     const grant = await program.account.grant.fetch(grantKeypair.publicKey);
     console.log("created grant:", grant);
+  });
+
+  it("submit", async () => {
+    await program.methods
+      .submit(testSubmissionSha256)
+      .accounts({
+        grant: grantKeypair.publicKey,
+        submission: submissionKeypair.publicKey,
+        mint: mintPda,
+        payTo: submitterATA,
+        payToOwner: submitter.publicKey,
+        payer: submitter.publicKey,
+      })
+      .signers([submitter, submissionKeypair])
+      .rpc();
   });
 });
