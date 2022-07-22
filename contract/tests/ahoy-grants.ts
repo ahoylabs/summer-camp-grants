@@ -1,17 +1,18 @@
 import * as anchor from "@project-serum/anchor";
 import { Program } from "@project-serum/anchor";
-import { AhoyGrants } from "../target/types/ahoy_grants";
-import {
-  SplTokenFaucet,
-  IDL as SplTokenFaucetIDL,
-} from "../types/spl_token_faucet";
 import * as token from "@solana/spl-token";
 import {
-  TOKEN_PROGRAM_ID,
   ASSOCIATED_TOKEN_PROGRAM_ID,
+  TOKEN_PROGRAM_ID,
 } from "@solana/spl-token";
-import { airdrop10Sol, createContentSHA } from "./utils/testingUtils";
 import { assert } from "chai";
+
+import { AhoyGrants } from "../target/types/ahoy_grants";
+import {
+  IDL as SplTokenFaucetIDL,
+  SplTokenFaucet,
+} from "../types/spl_token_faucet";
+import { airdrop10Sol, createContentSHA } from "./utils/testingUtils";
 
 const SPL_TOKEN_FAUCET_PROGRAM_ID = new anchor.web3.PublicKey(
   "4sN8PnN2ki2W4TFXAfzR645FWs8nimmsYeNtxM8RBK6A"
@@ -61,7 +62,7 @@ before("initialize accounts", async () => {
     .initializeFaucet(mintPdaBump)
     .accounts({
       mint: mintPda,
-      payer: provider.publicKey,
+      payer: provider.wallet.publicKey,
     })
     .rpc();
 
