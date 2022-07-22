@@ -12,3 +12,9 @@ wallet = "~/.config/solana/id.json"
 
 [scripts]
 test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
+
+# spl_token_faucet (https://github.com/credix-finance/spl-token-faucet) is used
+# to be able to simulate USDC when testing.
+[[test.genesis]]
+address = "4sN8PnN2ki2W4TFXAfzR645FWs8nimmsYeNtxM8RBK6A"
+program = "spl_token_faucet.so"
