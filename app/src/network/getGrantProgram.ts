@@ -10,9 +10,7 @@ export const getGrantProgram = (
   wallet: AnchorWallet,
   connection: Connection,
 ) => {
-  const provider = new AnchorProvider(connection, wallet, {
-    preflightCommitment: 'processed',
-  })
+  const provider = new AnchorProvider(connection, wallet, {})
 
   const program = new Program(
     IDL,
