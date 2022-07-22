@@ -5,7 +5,8 @@
         "anchor": "./scripts/anchor-pinned.sh",
         "build": "./scripts/replace-solana-program-id.sh yarn anchor build",
         "test": "./scripts/replace-solana-program-id.sh yarn anchor test",
-        "deploy": "./scripts/replace-solana-program-id.sh yarn anchor deploy"
+        "deploy": "./scripts/replace-solana-program-id.sh yarn anchor deploy",
+        "init-faucet": "yarn anchor run --provider.cluster http://127.0.0.1:8899 init_faucet"
     },
     "dependencies": {
         "@project-serum/anchor": "^0.24.2",
