@@ -17,6 +17,8 @@ const pageWrap = css`
   width: 100%;
   min-height: 100vh;
   background-color: ${colors.bg.white};
+  display: flex;
+  flex-direction: column;
 `
 
 const header = css`
@@ -75,7 +77,8 @@ const container = css`
   width: 100%;
   max-width: ${PAGE_WIDTH}px;
   display: flex;
-  justify-content: center;
+  flex-grow: 1;
+  justify-content: flex-start;
   padding: 48px 24px;
   margin: 0 auto;
   flex-direction: column;

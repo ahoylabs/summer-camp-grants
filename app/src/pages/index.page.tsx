@@ -98,7 +98,7 @@ const Home: NextPage = () => {
       <SolanaSummerSVG width={500} className={solanaSVGSty} />
       <Spacers.Vertical._16px />
       <h1 className={heading}>
-        Solana Summer Hackathon
+        Solana Summer Camp Hackathon
         <br /> Ecosystem Grants
       </h1>
       <NavMenu />
