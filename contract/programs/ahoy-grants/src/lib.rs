@@ -80,6 +80,14 @@ pub mod ahoy_grants {
 
         submission.amount_won += amount;
 
+        msg!(
+            "Paid {:?} to {:?} from {:?} for grant {:?}",
+            amount,
+            ctx.accounts.pay_to.key(),
+            ctx.accounts.wallet_owner.key(),
+            ctx.accounts.grant.key(),
+        );
+
         Ok(())
     }
 }
