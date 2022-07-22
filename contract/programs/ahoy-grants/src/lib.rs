@@ -19,7 +19,7 @@ security_txt! {
 pub mod ahoy_grants {
     use super::*;
 
-    // Create a new crand.
+    // Create a new grant
     pub fn create(ctx: Context<Create>, content_sha256: [u8; 32]) -> Result<()> {
         let grant = &mut ctx.accounts.grant;
         let wallet = &ctx.accounts.wallet;
