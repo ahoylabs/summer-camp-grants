@@ -8,6 +8,7 @@ export const envVars: ENVTypes = {
     NEXT_PUBLIC_SENTRY_DSN: '',
     NEXT_PUBLIC_SOLANA_CLUSTER: 'localnet',
     NEXT_PUBLIC_SENTRY_ENABLED: 'false',
+    NEXT_PUBLIC_USDC_MINT_ADDR: '1313131313131313131313131313131313131313131',
     /** private for Pinata server */
     PINATA_PRIVATE_API_KEY: '',
     PINATA_PUBLIC_API_KEY: '',

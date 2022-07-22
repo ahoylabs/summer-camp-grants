@@ -2,7 +2,7 @@ import { AnchorWallet } from '@solana/wallet-adapter-react'
 
 import { connection } from '../connection'
 import { getGrantProgram } from '../getGrantProgram'
-import { formatGrant, Grant } from '../types/Grant'
+import { formatGrant, Grant } from '../types/models/Grant'
 
 interface Args {
   wallet: AnchorWallet

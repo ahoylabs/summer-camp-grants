@@ -1,0 +1,13 @@
+import { getAccount } from '@solana/spl-token'
+import { PublicKey } from '@solana/web3.js'
+
+import { connection } from '../connection'
+import { getUSDCAssociatedTokenAddress } from '../getUSDCAssociatedTokenAddress'
+import { convertUnitsToUSDC } from './../convertUSDC'
+
+export const fetchUSDCBalance = async (owner: PublicKey): Promise<number> => {
+  const associatedTokenAddress = await getUSDCAssociatedTokenAddress(owner)
+  const account = await getAccount(connection, associatedTokenAddress)
+  const balanceUSDC = convertUnitsToUSDC(account.amount)
+  return balanceUSDC
+}
