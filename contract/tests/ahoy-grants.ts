@@ -1,10 +1,6 @@
 import * as anchor from "@project-serum/anchor";
 import { Program } from "@project-serum/anchor";
 import * as token from "@solana/spl-token";
-import {
-  ASSOCIATED_TOKEN_PROGRAM_ID,
-  TOKEN_PROGRAM_ID,
-} from "@solana/spl-token";
 import { assert } from "chai";
 
 import { AhoyGrants } from "../target/types/ahoy_grants";
@@ -57,7 +53,7 @@ before("initialize accounts", async () => {
     submitter.publicKey
   );
 
-  // Initialize simulated USDC faucet (which will also create the mint)
+  // Initialize simulated USDC faucet (this creates the mint)
   await tokenFaucet.methods
     .initializeFaucet(mintPdaBump)
     .accounts({
