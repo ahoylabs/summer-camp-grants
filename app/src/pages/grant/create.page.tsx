@@ -2,10 +2,12 @@ import { useAnchorWallet } from '@solana/wallet-adapter-react'
 import { createHash } from 'crypto'
 import { Field, Form, Formik, FormikHelpers } from 'formik'
 import { NextPage } from 'next'
+import { useRouter } from 'next/router'
 
 import { Airdrop } from '../../components/Airdrop'
 import { Layout } from '../../components/Layout'
 import { Spacers } from '../../components/Spacers'
+import { urls } from '../../constants/urls'
 import { useConnectedWalletBalance } from '../../hooks/useConnectedWalletBalance'
 import { createGrant } from '../../network/rpc/createGrant'
 import { ContentSHA256 } from '../../network/types/ContentSHA256'
@@ -15,8 +17,10 @@ interface FormValuesSchema {
 }
 
 const CreateGrantPage: NextPage = () => {
+  const router = useRouter()
   const wallet = useAnchorWallet()
   const [solBalance, usdcBalance] = useConnectedWalletBalance()
+
   return (
     <Layout>
       <Airdrop />
@@ -42,9 +46,7 @@ const CreateGrantPage: NextPage = () => {
             contentSha256: fakeContent,
             wallet: wallet,
           })
-
-          console.log(grant)
-
+          router.push(urls.grant(grant.publicKey))
           setSubmitting(false)
         }}
       >
