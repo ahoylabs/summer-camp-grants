@@ -79,6 +79,8 @@ pub mod ahoy_grants {
         token::transfer(transfer_cpi_ctx, amount)?;
 
         submission.amount_won += amount;
+        let clock = Clock::get()?;
+        submission.won_at = clock.unix_timestamp;
 
         msg!(
             "Paid {:?} to {:?} from {:?} for grant {:?}",
@@ -182,6 +184,9 @@ pub struct Submission {
     // anything.
     pub amount_won: u64,
     pub submitted_at: i64,
+    // Timestamp of first time pay_submission was called on this submission. If there are
+    // subsequent calls to pay_submission for this submission they do not update won_at.
+    pub won_at: i64,
 }
 
 impl Submission {
@@ -190,5 +195,6 @@ impl Submission {
         + 32 // content_sha256
         + 32 // pay_to
         + 8 // amount_won
-        + 8; // submitted_at
+        + 8 // submitted_at
+        + 8; // won_at
 }
