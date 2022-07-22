@@ -1,6 +1,5 @@
 # Ahoy Grants
 
-This program allows creating grants with an on-chain record, where the grant
-creator also proves control of the funds specified in the grant. The grant
-creator still maintains control of how the funds are distributed, but, being
-on-chain, history is transparent and preserved.
+A Solana program for creating USDC-denominated grants with an on-chain record. 
+
+The Grantor (grant creator) proves control of the funds specified in the grant, while maintaining unilateral control of how / when / to whom the funds are distributed. Any number of Submitters (grant applicants) can submit a project for consideration. 
