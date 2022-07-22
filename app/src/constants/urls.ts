@@ -7,9 +7,12 @@ export const urls = {
   createGrant: '/grant/create',
 
   external: {
-    twitter: 'https://twitter.com/ahoy_labs',
+    twitter: 'https://twitter.com/intent/follow?screen_name=ahoy_labs',
     newsletter: 'https://newsletter.ahoy.fund',
   },
+
+  terms: 'https://ahoy.fund/terms',
+  privacy: 'https://ahoy.fund/privacy',
 
   api: {
     pinJSONToIPFS: '/api/ipfs/pinJSONToIPFS',

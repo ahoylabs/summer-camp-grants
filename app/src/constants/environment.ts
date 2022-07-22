@@ -11,11 +11,6 @@ export const ProgramPublicKey = new PublicKey(NEXT_PUBLIC_PROGRAM_ID)
 export const transactionCommitment: Commitment = 'confirmed'
 export const isHeapEnabled = NEXT_PUBLIC_HEAP_ENABLED === 'true'
 
-// derived keys
-/**
- * API url for the Solana network the frontend should call.
- * From https://docs.solana.com/cluster/rpc-endpoints
- */
 export const solanaRPCEndpoint =
   NEXT_PUBLIC_SOLANA_CLUSTER === 'localnet'
     ? 'http://127.0.0.1:8899'

@@ -1,9 +1,9 @@
 import { PublicKey } from '@solana/web3.js'
 import dayjs, { Dayjs } from 'dayjs'
 
-import { AhoyGrants } from '../../../../../contract/target/types/ahoy_grants'
 import { ContentSHA256 } from '../ContentSHA256'
 import { TypedProgram } from '../typedProgram'
+import { AhoyGrants } from './../../../__generated__/ahoy_grants'
 
 export interface Submission {
   contentSha256: ContentSHA256
