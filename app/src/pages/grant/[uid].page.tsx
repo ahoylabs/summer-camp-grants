@@ -210,7 +210,7 @@ const sampleGrant: GrantInfo = {
   },
   currentBalance: 5_123.31,
   description:
-    'We’re offering $10,000 for people to build things with Tulip Protocol. Show us what you’ve got!',
+    "We're offering $10,000 for people to build things with Tulip Protocol. Show us what you've got!",
   grantAmountUSD: 10_000.01,
   walletPublicKey: '7cre8AiBkVzWwFQtCA7TnEmh8CGTjZ87KJC5Mu3dZxwE',
 }

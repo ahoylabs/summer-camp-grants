@@ -7,6 +7,7 @@ import { Layout } from '../components/Layout'
 import { Spacers } from '../components/Spacers'
 import { SolanaSummerSVG } from '../components/svgs/SolanaSummerSVG'
 import { urls } from '../constants/urls'
+import { colors } from '../ui/colors'
 
 export type GrantInfo = {
   address: string
@@ -64,6 +65,7 @@ const heading = css`
 
 const solanaSVGSty = css`
   margin: auto;
+  filter: drop-shadow(0px 0px 3px ${colors.hover.fancy});
   @media only screen and (max-width: 555px) {
     width: 400px;
     height: 250px;

@@ -191,21 +191,21 @@ export const Layout: FC<{ children: React.ReactNode }> = ({ children }) => (
         </div>
         <div className={legalContainer}>
           <a target="_blank" href={urls.terms} rel="noreferrer">
-            <a>Terms of Use</a>
+            Terms of Use
           </a>
           <Spacers.Horizontal._24px />
           <div className={onlyMobile}>
             <Spacers.Vertical._24px />
           </div>
           <a target="_blank" href={urls.privacy} rel="noreferrer">
-            <a>Privacy Policy</a>
+            Privacy Policy
           </a>
           <Spacers.Horizontal._24px />
           <div className={onlyMobile}>
             <Spacers.Vertical._24px />
           </div>
           <a target="_blank" href="https://ahoy.fund" rel="noreferrer">
-            © 2022 Ahoy Labs, Inc.{' '}
+            © 2022 Ahoy Labs, Inc.
           </a>
           <div className={onlyMobile}>
             <Spacers.Vertical._24px />
