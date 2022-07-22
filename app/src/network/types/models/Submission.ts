@@ -1,14 +1,21 @@
 import { PublicKey } from '@solana/web3.js'
 import dayjs, { Dayjs } from 'dayjs'
+import Decimal from 'decimal.js-light'
 
-import { ContentSHA256 } from '../ContentSHA256'
+import { SubmissionForIPFS } from '../../ipfs/types'
 import { TypedProgram } from '../typedProgram'
 import { AhoyGrants } from './../../../__generated__/ahoy_grants'
 
 export interface Submission {
-  contentSha256: ContentSHA256
+  amountWon: Decimal
+  createdAt: Dayjs
+  grant: PublicKey
+  info: SubmissionForIPFS
+  initialAmount: Decimal
+  payTo: PublicKey
   publicKey: PublicKey
   submittedAt: Dayjs
+  wonAt: Dayjs
 }
 
 export type AnchorSubmission = Awaited<
@@ -18,10 +25,17 @@ export type AnchorSubmission = Awaited<
 export const formatSubmission = (
   pubkey: PublicKey,
   account: AnchorSubmission,
+  submissionInfo: SubmissionForIPFS,
 ): Submission => {
   return {
+    amountWon: new Decimal(account.amountWon.toString()),
+    createdAt: dayjs.unix(account.createdAt.toNumber()),
+    grant: account.grant,
+    info: submissionInfo,
+    initialAmount: new Decimal(account.initialAmount.toString()),
+    payTo: account.payTo,
     publicKey: pubkey,
-    contentSha256: account.contentSha256 as ContentSHA256,
     submittedAt: dayjs.unix(account.submittedAt.toNumber()),
+    wonAt: dayjs.unix(account.wonAt.toNumber()),
   }
 }

@@ -1,28 +1,41 @@
 import { AnchorWallet } from '@solana/wallet-adapter-react'
-import { Keypair } from '@solana/web3.js'
+import { Keypair, PublicKey } from '@solana/web3.js'
 
 import { getGrantProgram } from '../getGrantProgram'
 import { getUSDCAssociatedTokenAddress } from '../getUSDCAssociatedTokenAddress'
-import { ContentSHA256 } from '../types/ContentSHA256'
-import { formatGrant, Grant } from '../types/models/Grant'
+import { pinGrantToIPFS } from '../ipfs/pinToIPFS'
 import { connection } from './../connection'
 
 interface Args {
-  contentSha256: ContentSHA256
+  companyName: string
+  description: string
+  imageFile: File | null
+  twitterSlug: string
   wallet: AnchorWallet
+  websiteURL: string
 }
 
 export const createGrant = async ({
-  contentSha256,
+  companyName,
+  description,
+  imageFile,
+  twitterSlug,
   wallet,
-}: Args): Promise<Grant> => {
+  websiteURL,
+}: Args): Promise<PublicKey> => {
+  const contentSha256 = await pinGrantToIPFS(
+    companyName,
+    description,
+    twitterSlug,
+    websiteURL,
+    imageFile,
+  )
+
   const program = getGrantProgram(wallet, connection)
   const grantKeypair = Keypair.generate()
-
   const associatedTokenAddress = await getUSDCAssociatedTokenAddress(
     wallet.publicKey,
   )
-
   await program.methods
     .create(contentSha256)
     .accounts({
@@ -37,8 +50,7 @@ export const createGrant = async ({
     })
     .signers([grantKeypair])
     .rpc()
+  await program.account.grant.fetch(grantKeypair.publicKey)
 
-  const grantAccount = await program.account.grant.fetch(grantKeypair.publicKey)
-
-  return formatGrant(grantKeypair.publicKey, grantAccount)
+  return grantKeypair.publicKey
 }

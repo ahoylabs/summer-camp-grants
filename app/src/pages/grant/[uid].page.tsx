@@ -1,3 +1,4 @@
+import { getAccount } from '@solana/spl-token'
 import { useAnchorWallet } from '@solana/wallet-adapter-react'
 import { PublicKey } from '@solana/web3.js'
 import { css } from 'linaria'
@@ -11,12 +12,13 @@ import { BrandTwitterSVG } from '../../components/svgs/BrandTwitterSVG'
 import { ExternalLinkSVG } from '../../components/svgs/ExternalLinkSVG'
 import { PlusSVG } from '../../components/svgs/PlusSVG'
 import { WalletSVG } from '../../components/svgs/WalletSVG'
+import { connection } from '../../network/connection'
+import { convertUnitsToUSDC } from '../../network/convertUSDC'
 import { fetchGrantWithSubmissions } from '../../network/fetch/fetchGrantWithSubmissions'
 import { Grant } from '../../network/types/models/Grant'
 import { Submission } from '../../network/types/models/Submission'
 import { colors } from '../../ui/colors'
 import { displayPublicKey } from '../../utils/displayPublicKey'
-import { GrantInfo } from '../index.page'
 
 const headlineContainer = css`
   display: flex;
@@ -199,22 +201,6 @@ const singleSubmissionContact = css`
   line-height: 1.4;
 `
 
-const sampleGrant: GrantInfo = {
-  address: '1238AiBkVzWwFQtCA7TnEmh8CGTjZ87KJC5Mu3dZ456',
-  company: {
-    imageURL:
-      'https://pbs.twimg.com/profile_images/1446291295266238464/FO2fP9KO_400x400.jpg',
-    name: 'Tulip Protocol',
-    twitterSlug: 'TulipProtocol',
-    websiteURL: 'https://tulip.garden/',
-  },
-  currentBalance: 5_123.31,
-  description:
-    'We’re offering $10,000 for people to build things with Tulip Protocol. Show us what you’ve got!',
-  grantAmountUSD: 10_000.01,
-  walletPublicKey: '7cre8AiBkVzWwFQtCA7TnEmh8CGTjZ87KJC5Mu3dZxwE',
-}
-
 type SubmissionInfo = {
   contact: string
   description: string
@@ -244,6 +230,7 @@ const GrantPage: NextPage = () => {
   const wallet = useAnchorWallet()
 
   const [grant, setGrant] = useState<Grant | null>(null)
+  const [usdcBalance, setUsdcBalance] = useState(0)
   const [submissions, setSubmissions] = useState<Submission[] | null>(null)
 
   const { uid } = router.query
@@ -251,34 +238,60 @@ const GrantPage: NextPage = () => {
   useEffect(() => {
     ;(async () => {
       if (!wallet) return
+
       // TODO add some validation on UID from router query
-      const [grant, submissions] = await fetchGrantWithSubmissions({
+      const grant = await fetchGrantWithSubmissions({
         grantPubkey: new PublicKey(uid as string),
         wallet,
       })
+      try {
+        // usdc ATA
+        const account = await getAccount(
+          connection,
+          grant.associatedUSDCTokenAccount,
+        )
+        const balanceUSDC = convertUnitsToUSDC(account.amount)
+        setUsdcBalance(balanceUSDC)
+      } catch (error) {
+        // could have been destroyed
+        setUsdcBalance(0)
+      }
+
       setGrant(grant)
-      setSubmissions(submissions)
+      // setSubmissions(submissions)
     })()
   }, [uid, wallet])
+
+  if (!grant) return <div>'loading...'</div>
+
+  const {
+    createdAt,
+    info,
+    associatedUSDCTokenAccount,
+    initialAmountUSDC,
+    publicKey,
+  } = grant
+  const { companyName, description, imageCID, twitterSlug, websiteURL } =
+    grant.info
 
   return (
     <Layout>
       <div className={headlineContainer}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        {/* <img
           className={headlineImage}
-          src={sampleGrant.company.imageURL}
+          src={grant?.info.imageCID}
           width={48}
           height={48}
           alt={`${sampleGrant.company.name} logo`}
-        />
+        /> */}
         <Spacers.Horizontal._8px />
         <h1 className={headlineText}>
-          {sampleGrant.company.name}
+          {companyName}
           {': '}
           <Spacers.Horizontal._8px />
           <span className={grantAmountText}>
-            ${Math.floor(sampleGrant.grantAmountUSD).toLocaleString()} Grant
+            ${Math.floor(initialAmountUSDC).toLocaleString()} Grant
           </span>
         </h1>
       </div>
@@ -286,45 +299,45 @@ const GrantPage: NextPage = () => {
       <div className={linkContainer}>
         <a
           className={externalCompanyLink}
-          href={`https://twitter.com/${sampleGrant.company.twitterSlug}`}
+          href={`https://twitter.com/${twitterSlug}`}
           target="_blank"
           rel="noreferrer"
         >
           <BrandTwitterSVG width={16} />
           <Spacers.Horizontal._4px />
-          <span>@{sampleGrant.company.twitterSlug}</span>
+          <span>@{twitterSlug}</span>
         </a>
         <Spacers.Horizontal._8px />
         <div className={verticalLine} />
         <Spacers.Horizontal._8px />
         <a
           className={externalCompanyLink}
-          href={sampleGrant.company.websiteURL}
+          href={websiteURL}
           target="_blank"
           rel="noreferrer"
         >
           <ExternalLinkSVG width={16} />
           <Spacers.Horizontal._4px />
-          <span>{sampleGrant.company.websiteURL}</span>
+          <span>{websiteURL}</span>
         </a>
       </div>
       <Spacers.Vertical._32px />
-      <div className={descriptionText}>{sampleGrant.description}</div>
+      <div className={descriptionText}>{description}</div>
       <Spacers.Vertical._32px />
       <div className={walletContainer}>
         <div className={leftSideWalletContainer}>
           <div className={leftSideWalletContainerBalance}>
             <WalletSVG width={24} />
             <Spacers.Horizontal._4px />$
-            {Math.floor(sampleGrant.currentBalance).toLocaleString()} USDC
+            {Math.floor(usdcBalance).toLocaleString()} USDC
           </div>
           <Spacers.Vertical._4px />
           <div className={leftSideWalletContainerAddress}>
-            {displayPublicKey(sampleGrant.walletPublicKey)}
+            {displayPublicKey(associatedUSDCTokenAccount)}
           </div>
         </div>
         <a
-          href={`https://explorer.solana.com/address/${sampleGrant.walletPublicKey}`}
+          href={`https://explorer.solana.com/address/${associatedUSDCTokenAccount}`}
           target="_blank"
           className={viewOnSolanaExplorerButton}
           rel="noreferrer"

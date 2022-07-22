@@ -1,5 +1,4 @@
 import { useAnchorWallet } from '@solana/wallet-adapter-react'
-import { createHash } from 'crypto'
 import { Field, Form, Formik, FormikHelpers } from 'formik'
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
@@ -10,7 +9,6 @@ import { Spacers } from '../../components/Spacers'
 import { urls } from '../../constants/urls'
 import { useConnectedWalletBalance } from '../../hooks/useConnectedWalletBalance'
 import { createGrant } from '../../network/rpc/createGrant'
-import { ContentSHA256 } from '../../network/types/ContentSHA256'
 
 interface FormValuesSchema {
   companyName: string
@@ -38,15 +36,17 @@ const CreateGrantPage: NextPage = () => {
           { setSubmitting }: FormikHelpers<FormValuesSchema>,
         ) => {
           if (!wallet) return
-          const fakeContent = [
-            ...createHash('sha256').update(companyName, 'utf8').digest(),
-          ] as ContentSHA256
 
-          const grant = await createGrant({
-            contentSha256: fakeContent,
+          const grantPubkey = await createGrant({
+            imageFile: null,
+            companyName: 'Tulip Protocol',
+            twitterSlug: 'TulipProtocol',
+            websiteURL: 'tulip.garden',
+            description:
+              'The Tulip Farmers Fund is officially here! Our new $500,000 community grant program dedicated to support builders and the #Solana community looking to build projects within the $TULIP Ecosystem.',
             wallet: wallet,
           })
-          router.push(urls.grant(grant.publicKey))
+          router.push(urls.grant(grantPubkey))
           setSubmitting(false)
         }}
       >
