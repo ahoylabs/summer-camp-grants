@@ -1,12 +1,17 @@
+import { AnchorWallet, useAnchorWallet } from '@solana/wallet-adapter-react'
+import { Keypair, PublicKey, Transaction } from '@solana/web3.js'
 import { css } from 'linaria'
 import type { NextPage } from 'next'
 import Link from 'next/link'
+import { useEffect } from 'react'
 
 import { GrantCard } from '../components/GrantCard'
 import { Layout } from '../components/Layout'
 import { Spacers } from '../components/Spacers'
 import { SolanaSummerSVG } from '../components/svgs/SolanaSummerSVG'
 import { urls } from '../constants/urls'
+import { fetchAllGrants } from '../network/fetch/fetchAllGrants'
+import { anchorWalletWithFallback } from '../utils/anchorWalletWithFallback'
 
 export type GrantInfo = {
   address: string
@@ -92,7 +97,16 @@ const NavMenu = () => (
 )
 
 const Home: NextPage = () => {
-  const grants: GrantInfo[] = Array(15).fill(sampleGrant)
+  const wallet = useAnchorWallet()
+
+  useEffect(() => {
+    ;(async () => {
+      await fetchAllGrants({
+        wallet: anchorWalletWithFallback(wallet),
+      })
+    })()
+  }, [wallet])
+
   return (
     <Layout>
       <SolanaSummerSVG width={500} className={solanaSVGSty} />
@@ -104,9 +118,9 @@ const Home: NextPage = () => {
       <NavMenu />
       <Spacers.Vertical._48px />
       <div className={grantsContainer}>
-        {grants.map((g, i) => (
+        {/* {grants.map((g, i) => (
           <GrantCard key={i} grant={g} />
-        ))}
+        ))} */}
       </div>
     </Layout>
   )
