@@ -27,6 +27,8 @@ pub mod ahoy_grants {
         grant.content_sha256 = content_sha256;
         grant.wallet = wallet.key();
         grant.initial_amount = wallet.amount;
+        let clock = Clock::get()?;
+        grant.created_at = clock.unix_timestamp;
 
         Ok(())
     }
@@ -55,11 +57,13 @@ pub struct Grant {
     pub wallet: Pubkey,
     // Balance (amount) of wallet when the grant was initially created.
     pub initial_amount: u64,
+    pub created_at: i64,
 }
 
 impl Grant {
     const LEN: usize = 8 // Anchor discriminator
         + 32 // content_sha256
         + 32 // wallet
-        + 8; // initial_amount
+        + 8 // initial_amount
+        + 8; // created_at
 }
