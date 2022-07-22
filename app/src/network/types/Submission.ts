@@ -1,24 +1,24 @@
 import { PublicKey } from '@solana/web3.js'
-import Decimal from 'decimal.js-light'
 
 import { AhoyGrants } from '../../../../contract/target/types/ahoy_grants'
 import { ContentSHA256 } from './ContentSHA256'
 import { TypedProgram } from './typedProgram'
 
-export interface Grant {
+export interface Submission {
   contentSha256: ContentSHA256
-  initialAmountLamports: Decimal
   publicKey: PublicKey
 }
 
-type AnchorGrant = Awaited<
-  ReturnType<TypedProgram<AhoyGrants>['account']['grant']['fetch']>
+type AnchorSubmission = Awaited<
+  ReturnType<TypedProgram<AhoyGrants>['account']['submission']['fetch']>
 >
 
-export const formatGrant = (pubkey: PublicKey, account: AnchorGrant): Grant => {
+export const formatSubmission = (
+  pubkey: PublicKey,
+  account: AnchorSubmission,
+): Submission => {
   return {
     publicKey: pubkey,
     contentSha256: account.contentSha256 as ContentSHA256,
-    initialAmountLamports: new Decimal(account.initialAmount.toString()),
   }
 }

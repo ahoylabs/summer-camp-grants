@@ -1,11 +1,10 @@
 import { AnchorWallet } from '@solana/wallet-adapter-react'
 import { Keypair } from '@solana/web3.js'
-import Decimal from 'decimal.js-light'
 
 import { fetchUSDCAssociatedTokenAccount } from '../fetch/fetchUSDCAssociatedTokenAccount'
 import { getGrantProgram } from '../getGrantProgram'
 import { ContentSHA256 } from '../types/ContentSHA256'
-import { Grant } from '../types/Grant'
+import { formatGrant, Grant } from '../types/Grant'
 import { connection } from './../connection'
 
 interface Args {
@@ -41,9 +40,5 @@ export const createGrant = async ({
 
   const grantAccount = await program.account.grant.fetch(grantKeypair.publicKey)
 
-  return {
-    publicKey: grantKeypair.publicKey,
-    contentSha256: grantAccount.contentSha256 as ContentSHA256,
-    initialAmountLamports: new Decimal(grantAccount.initialAmount.toString()),
-  }
+  return formatGrant(grantKeypair.publicKey, grantAccount)
 }

@@ -2,16 +2,12 @@ import { getAccount } from '@solana/spl-token'
 import { PublicKey } from '@solana/web3.js'
 
 import { connection } from '../connection'
+import { convertUnitsToUSDC } from './../convertUSDC'
 import { fetchUSDCAssociatedTokenAccount } from './fetchUSDCAssociatedTokenAccount'
-
-const convertToUSDC = (amount: bigint): number => {
-  // USDC is denominated in units of 1e^-6
-  return Number(amount) / 1_000_000
-}
 
 export const fetchUSDCBalance = async (owner: PublicKey): Promise<number> => {
   const associatedTokenAddress = await fetchUSDCAssociatedTokenAccount(owner)
   const account = await getAccount(connection, associatedTokenAddress)
-  const balanceUSDC = convertToUSDC(account.amount)
+  const balanceUSDC = convertUnitsToUSDC(account.amount)
   return balanceUSDC
 }
