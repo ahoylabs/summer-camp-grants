@@ -22,6 +22,9 @@ if (process.env.NEXT_PUBLIC_SENTRY_ENABLED == null) {
 if (process.env.NEXT_PUBLIC_SOLANA_CLUSTER == null) {
   throw new Error('missing process.env.NEXT_PUBLIC_SOLANA_CLUSTER in app')
 }
+if (process.env.NEXT_PUBLIC_USDC_MINT_ADDR == null) {
+  throw new Error('missing process.env.NEXT_PUBLIC_USDC_MINT_ADDR in app')
+}
 
 export const NEXT_PUBLIC_HEAP_ANALYTICS_KEY = process.env.NEXT_PUBLIC_HEAP_ANALYTICS_KEY
 export const NEXT_PUBLIC_HEAP_ENABLED = process.env.NEXT_PUBLIC_HEAP_ENABLED
@@ -29,3 +32,4 @@ export const NEXT_PUBLIC_PROGRAM_ID = process.env.NEXT_PUBLIC_PROGRAM_ID
 export const NEXT_PUBLIC_SENTRY_DSN = process.env.NEXT_PUBLIC_SENTRY_DSN
 export const NEXT_PUBLIC_SENTRY_ENABLED = process.env.NEXT_PUBLIC_SENTRY_ENABLED
 export const NEXT_PUBLIC_SOLANA_CLUSTER = process.env.NEXT_PUBLIC_SOLANA_CLUSTER
+export const NEXT_PUBLIC_USDC_MINT_ADDR = process.env.NEXT_PUBLIC_USDC_MINT_ADDR
