@@ -2,7 +2,7 @@ import { utils } from '@project-serum/anchor'
 import { getAssociatedTokenAddress } from '@solana/spl-token'
 import { PublicKey } from '@solana/web3.js'
 
-import { localFaucetProgram } from './getAirdropProgram'
+import { localFaucetProgram } from './getFaucetProgram'
 
 export const getUSDCAssociatedTokenAddress = async (
   owner: PublicKey,

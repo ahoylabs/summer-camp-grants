@@ -8,7 +8,7 @@ import { PublicKey } from '@solana/web3.js'
 import { FC } from 'react'
 
 import { connection } from '../network/connection'
-import { getAirdropProgram } from '../network/getAirdropProgram'
+import { getFaucetProgram } from '../network/getFaucetProgram'
 
 export const Airdrop: FC = () => {
   const wallet = useAnchorWallet()
@@ -16,7 +16,7 @@ export const Airdrop: FC = () => {
   const airdrop = async () => {
     if (!wallet) return
 
-    const program = getAirdropProgram(wallet, connection)
+    const program = getFaucetProgram(wallet, connection)
 
     const [mintPda, mintPdaBump] = await PublicKey.findProgramAddress(
       [Buffer.from(utils.bytes.utf8.encode('faucet-mint'))],

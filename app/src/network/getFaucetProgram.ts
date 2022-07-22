@@ -9,17 +9,15 @@ export const localFaucetProgram = new PublicKey(
   '4sN8PnN2ki2W4TFXAfzR645FWs8nimmsYeNtxM8RBK6A',
 )
 
-export const getAirdropProgram = (
+export const getFaucetProgram = (
   wallet: AnchorWallet,
   connection: Connection,
 ) => {
   const provider = new AnchorProvider(connection, wallet, {})
-
   const program = new Program(
     IDL,
     localFaucetProgram,
     provider,
   ) as TypedProgram<SplTokenFaucet>
-
   return program
 }
