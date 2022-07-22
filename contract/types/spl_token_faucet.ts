@@ -1,34 +1,31 @@
 export type SplTokenFaucet = {
-  version: "0.0.0";
-  name: "spl_token_faucet";
   instructions: [
     {
-      name: "initializeFaucet";
       accounts: [
         {
-          name: "mint";
           isMut: true;
           isSigner: false;
+          name: "mint";
         },
         {
-          name: "payer";
           isMut: true;
           isSigner: true;
+          name: "payer";
         },
         {
+          isMut: false;
+          isSigner: false;
           name: "systemProgram";
-          isMut: false;
-          isSigner: false;
         },
         {
+          isMut: false;
+          isSigner: false;
           name: "tokenProgram";
-          isMut: false;
-          isSigner: false;
         },
         {
-          name: "rent";
           isMut: false;
           isSigner: false;
+          name: "rent";
         }
       ];
       args: [
@@ -37,49 +34,49 @@ export type SplTokenFaucet = {
           type: "u8";
         }
       ];
+      name: "initializeFaucet";
     },
     {
-      name: "airdrop";
       accounts: [
         {
+          isMut: true;
+          isSigner: false;
           name: "mint";
-          isMut: true;
-          isSigner: false;
         },
         {
+          isMut: true;
+          isSigner: false;
           name: "destination";
-          isMut: true;
-          isSigner: false;
         },
         {
-          name: "payer";
           isMut: true;
           isSigner: true;
+          name: "payer";
         },
         {
+          isMut: false;
+          isSigner: false;
           name: "receiver";
-          isMut: false;
-          isSigner: false;
         },
         {
+          isMut: false;
+          isSigner: false;
           name: "systemProgram";
-          isMut: false;
-          isSigner: false;
         },
         {
+          isMut: false;
+          isSigner: false;
           name: "tokenProgram";
-          isMut: false;
-          isSigner: false;
         },
         {
+          isMut: false;
+          isSigner: false;
           name: "associatedTokenProgram";
-          isMut: false;
-          isSigner: false;
         },
         {
-          name: "rent";
           isMut: false;
           isSigner: false;
+          name: "rent";
         }
       ];
       args: [
@@ -92,41 +89,41 @@ export type SplTokenFaucet = {
           type: "u64";
         }
       ];
+      name: "airdrop";
     }
   ];
+  name: "spl_token_faucet";
+  version: "0.0.0";
 };
 
 export const IDL: SplTokenFaucet = {
-  version: "0.0.0",
-  name: "spl_token_faucet",
   instructions: [
     {
-      name: "initializeFaucet",
       accounts: [
         {
-          name: "mint",
           isMut: true,
           isSigner: false,
+          name: "mint",
         },
         {
-          name: "payer",
           isMut: true,
           isSigner: true,
+          name: "payer",
         },
         {
+          isMut: false,
+          isSigner: false,
           name: "systemProgram",
-          isMut: false,
-          isSigner: false,
         },
         {
+          isMut: false,
+          isSigner: false,
           name: "tokenProgram",
-          isMut: false,
-          isSigner: false,
         },
         {
-          name: "rent",
           isMut: false,
           isSigner: false,
+          name: "rent",
         },
       ],
       args: [
@@ -135,49 +132,49 @@ export const IDL: SplTokenFaucet = {
           type: "u8",
         },
       ],
+      name: "initializeFaucet",
     },
     {
-      name: "airdrop",
       accounts: [
         {
+          isMut: true,
+          isSigner: false,
           name: "mint",
-          isMut: true,
-          isSigner: false,
         },
         {
+          isMut: true,
+          isSigner: false,
           name: "destination",
-          isMut: true,
-          isSigner: false,
         },
         {
-          name: "payer",
           isMut: true,
           isSigner: true,
+          name: "payer",
         },
         {
+          isMut: false,
+          isSigner: false,
           name: "receiver",
-          isMut: false,
-          isSigner: false,
         },
         {
+          isMut: false,
+          isSigner: false,
           name: "systemProgram",
-          isMut: false,
-          isSigner: false,
         },
         {
+          isMut: false,
+          isSigner: false,
           name: "tokenProgram",
-          isMut: false,
-          isSigner: false,
         },
         {
+          isMut: false,
+          isSigner: false,
           name: "associatedTokenProgram",
-          isMut: false,
-          isSigner: false,
         },
         {
-          name: "rent",
           isMut: false,
           isSigner: false,
+          name: "rent",
         },
       ],
       args: [
@@ -190,6 +187,9 @@ export const IDL: SplTokenFaucet = {
           type: "u64",
         },
       ],
+      name: "airdrop",
     },
   ],
+  name: "spl_token_faucet",
+  version: "0.0.0",
 };

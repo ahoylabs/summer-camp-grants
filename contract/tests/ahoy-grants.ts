@@ -1,10 +1,6 @@
 import * as anchor from "@project-serum/anchor";
 import { Program } from "@project-serum/anchor";
 import * as token from "@solana/spl-token";
-import {
-  ASSOCIATED_TOKEN_PROGRAM_ID,
-  TOKEN_PROGRAM_ID,
-} from "@solana/spl-token";
 import { assert } from "chai";
 
 import { AhoyGrants } from "../target/types/ahoy_grants";
@@ -74,10 +70,10 @@ before("initialize accounts", async () => {
   await tokenFaucet.methods
     .airdrop(mintPdaBump, new anchor.BN(42_000_000))
     .accounts({
-      receiver: grantCreator.publicKey,
-      payer: grantCreator.publicKey,
-      mint: mintPda,
       destination: grantCreatorATA,
+      mint: mintPda,
+      payer: grantCreator.publicKey,
+      receiver: grantCreator.publicKey,
     })
     .signers([grantCreator])
     .rpc();
@@ -89,9 +85,9 @@ describe("ahoy-grants", () => {
       .create(testContentSha256)
       .accounts({
         grant: grantKeypair.publicKey,
+        payer: grantCreator.publicKey,
         wallet: grantCreatorATA,
         walletOwner: grantCreator.publicKey,
-        payer: grantCreator.publicKey,
       })
       .signers([grantCreator, grantKeypair])
       .rpc();
@@ -105,11 +101,11 @@ describe("ahoy-grants", () => {
       .submit(testSubmissionSha256)
       .accounts({
         grant: grantKeypair.publicKey,
-        submission: submissionKeypair.publicKey,
         mint: mintPda,
         payTo: submitterATA,
         payToOwner: submitter.publicKey,
         payer: submitter.publicKey,
+        submission: submissionKeypair.publicKey,
       })
       .signers([submitter, submissionKeypair])
       .rpc();
@@ -125,10 +121,10 @@ describe("ahoy-grants", () => {
       .paySubmission(new anchor.BN(12_000_000))
       .accounts({
         grant: grantKeypair.publicKey,
+        payTo: submitterATA,
         submission: submissionKeypair.publicKey,
         wallet: grantCreatorATA,
         walletOwner: grantCreator.publicKey,
-        payTo: submitterATA,
       })
       .signers([grantCreator])
       .rpc();

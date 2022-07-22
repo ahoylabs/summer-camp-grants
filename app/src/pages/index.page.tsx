@@ -1,6 +1,7 @@
 import type { NextPage } from 'next'
 import Link from 'next/link'
 
+import { Airdrop } from '../components/Airdrop'
 import { Layout } from '../components/Layout'
 import { Spacers } from '../components/Spacers'
 import { urls } from '../constants/urls'
@@ -33,6 +34,7 @@ const Home: NextPage = () => {
           </Link>
         </li>
       </ul>
+      <Airdrop />
     </Layout>
   )
 }
