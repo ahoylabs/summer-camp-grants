@@ -5,10 +5,7 @@ import { GlowWalletAdapter } from '@solana/wallet-adapter-glow'
 import { HuobiWalletAdapter } from '@solana/wallet-adapter-huobi'
 import { LedgerWalletAdapter } from '@solana/wallet-adapter-ledger'
 import { PhantomWalletAdapter } from '@solana/wallet-adapter-phantom'
-import {
-  ConnectionProvider,
-  WalletProvider,
-} from '@solana/wallet-adapter-react'
+import { WalletProvider } from '@solana/wallet-adapter-react'
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui'
 import { SafePalWalletAdapter } from '@solana/wallet-adapter-safepal'
 import { SlopeWalletAdapter } from '@solana/wallet-adapter-slope'
@@ -18,7 +15,6 @@ import { TorusWalletAdapter } from '@solana/wallet-adapter-torus'
 import { FC, useMemo } from 'react'
 
 import { NEXT_PUBLIC_SOLANA_CLUSTER } from '../__generated__/_env'
-import { solanaRPCEndpoint } from '../constants/environment'
 
 export const SolanaWalletProvider: FC<{ children: React.ReactNode }> = ({
   children,
@@ -47,10 +43,8 @@ export const SolanaWalletProvider: FC<{ children: React.ReactNode }> = ({
   )
 
   return (
-    <ConnectionProvider endpoint={solanaRPCEndpoint}>
-      <WalletProvider wallets={wallets} autoConnect>
-        <WalletModalProvider>{children}</WalletModalProvider>
-      </WalletProvider>
-    </ConnectionProvider>
+    <WalletProvider wallets={wallets} autoConnect>
+      <WalletModalProvider>{children}</WalletModalProvider>
+    </WalletProvider>
   )
 }

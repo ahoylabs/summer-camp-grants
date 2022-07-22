@@ -10,6 +10,7 @@ import { PlusSVG } from '../../components/svgs/PlusSVG'
 import { WalletSVG } from '../../components/svgs/WalletSVG'
 import { colors } from '../../ui/colors'
 import { displayPublicKey } from '../../utils/displayPublicKey'
+import { GrantInfo } from '../index.page'
 
 const headlineContainer = css`
   display: flex;
@@ -192,20 +193,8 @@ const singleSubmissionContact = css`
   line-height: 1.4;
 `
 
-type GrantInfo = {
-  company: {
-    imageURL: string
-    name: string
-    twitterSlug: string
-    websiteURL: string
-  }
-  currentBalance: number
-  description: string
-  grantAmountUSD: number
-  walletPublicKey: string
-}
-
 const sampleGrant: GrantInfo = {
+  address: '1238AiBkVzWwFQtCA7TnEmh8CGTjZ87KJC5Mu3dZ456',
   company: {
     imageURL:
       'https://pbs.twimg.com/profile_images/1446291295266238464/FO2fP9KO_400x400.jpg',

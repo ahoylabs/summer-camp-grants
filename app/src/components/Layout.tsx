@@ -7,6 +7,7 @@ import { urls } from '../constants/urls'
 import { colors } from '../ui/colors'
 import { Spacers } from './Spacers'
 import { AhoyLogoSVG } from './svgs/AhoyLogoSVG'
+import { BrandTwitterSVG } from './svgs/BrandTwitterSVG'
 import { SolanaLogoSVG } from './svgs/SolanaLogoSVG'
 
 // 800 + 24px of padding on each side
@@ -16,7 +17,6 @@ const pageWrap = css`
   width: 100%;
   min-height: 100vh;
   background-color: ${colors.bg.white};
-  overflow-x: hidden;
 `
 
 const header = css`
@@ -82,6 +82,62 @@ const container = css`
   box-sizing: border-box;
 `
 
+const footer = css`
+  display: flex;
+  flex-direction: column;
+  background-color: ${colors.bg.gray};
+  width: 100%;
+  justify-content: center;
+`
+
+// BOTTOM
+const footerContent = css`
+  padding: 16px 16px;
+  width: 100%;
+  max-width: ${PAGE_WIDTH}px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: auto;
+
+  @media only screen and (max-width: 720px) {
+    flex-direction: column;
+    padding: 0px 16px;
+    align-items: center;
+  }
+`
+
+const followOnTwitter = css`
+  display: flex;
+  font-size: 16px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  color: ${colors.text.whitePrimary};
+  background: ${colors.brand.twitterBlue};
+  border: 1.5px solid transparent;
+  font-weight: 600;
+  :hover {
+    background: transparent;
+    border: 1.5px solid ${colors.brand.twitterBlue};
+    color: ${colors.brand.twitterBlue};
+  }
+`
+
+const legalContainer = css`
+  display: flex;
+  font-size: 12px;
+  a:hover {
+    text-decoration: underline;
+  }
+`
+
+const onlyMobile = css`
+  display: none;
+  @media only screen and (max-width: 720px) {
+    display: block;
+  }
+`
+
 export const Layout: FC<{ children: React.ReactNode }> = ({ children }) => (
   <div className={pageWrap}>
     <div className={header}>
@@ -112,5 +168,47 @@ export const Layout: FC<{ children: React.ReactNode }> = ({ children }) => (
     </div>
     <div style={{ height: 64 }} />
     <div className={container}>{children}</div>
+    <div className={footer}>
+      <div className={footerContent}>
+        <div className={onlyMobile}>
+          <Spacers.Vertical._24px />
+        </div>
+        <a
+          className={followOnTwitter}
+          href={urls.external.twitter}
+          target="_blank"
+          rel="noreferrer"
+        >
+          <BrandTwitterSVG width={16} />
+          <Spacers.Horizontal._8px />
+          Follow Ahoy on Twitter
+        </a>
+        <div className={onlyMobile}>
+          <Spacers.Vertical._24px />
+        </div>
+        <div className={legalContainer}>
+          <a target="_blank" href={urls.terms} rel="noreferrer">
+            <a>Terms of Use</a>
+          </a>
+          <Spacers.Horizontal._24px />
+          <div className={onlyMobile}>
+            <Spacers.Vertical._24px />
+          </div>
+          <a target="_blank" href={urls.privacy} rel="noreferrer">
+            <a>Privacy Policy</a>
+          </a>
+          <Spacers.Horizontal._24px />
+          <div className={onlyMobile}>
+            <Spacers.Vertical._24px />
+          </div>
+          <a target="_blank" href="https://ahoy.fund" rel="noreferrer">
+            © 2022 Ahoy Labs, Inc.{' '}
+          </a>
+          <div className={onlyMobile}>
+            <Spacers.Vertical._24px />
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 )
