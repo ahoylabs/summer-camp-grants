@@ -39,7 +39,7 @@
     "yup": "^0.32.11"
   },
   "devDependencies": {
-    "@ahoylabs/env-ts": "^0.1.1",
+    "@ahoylabs/env-ts": "^0.1.2",
     "@bartekbp/typescript-checkstyle": "^5.0.0",
     "@types/node": "18.0.6",
     "@types/react": "18.0.15",

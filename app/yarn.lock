@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@ahoylabs/env-ts@^0.1.1":
-  version "0.1.1"
-  resolved "https://npm.pkg.github.com/download/@ahoylabs/env-ts/0.1.1/15f6910811801caa58f630b3f49cfdf6370cdadd7558d3c9a208c8a68643ccf7#6866abdd7035e14f40cb052f6b968fc4cf81dcf0"
-  integrity sha512-x1S4EOMZwxeqyY1nQ5iIlWAToq4adcAKxaxI+EZ6LzsVXWgV6jPlwt8WY/ir1k6lG6Y5FhmM6EDAzL2wZnIIug==
+"@ahoylabs/env-ts@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@ahoylabs/env-ts/-/env-ts-0.1.2.tgz#579044ba4bf48e70d2535a96022c87ec5a0eba0c"
+  integrity sha512-PTye08Ia63P3qespVTYTuErJ4Q5qzbCAis14bx5KlSi4JCWynMNbWa0keSWhb+0nyimzMWQSJ1ElIiKNOsB10Q==
   dependencies:
     ts-node "^10.9.1"
 
