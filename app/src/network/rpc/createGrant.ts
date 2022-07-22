@@ -36,6 +36,7 @@ export const createGrant = async ({
       // owner of the associated token account
       walletOwner: wallet.publicKey,
     })
+    .signers([grantKeypair])
     .rpc()
 
   const grantAccount = await program.account.grant.fetch(grantKeypair.publicKey)
