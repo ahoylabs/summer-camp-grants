@@ -5,4 +5,4 @@ interface Args {
   submissionAddress: string
 }
 
-export const getSubmission = () => {}
+export const fetchSubmission = () => {}

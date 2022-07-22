@@ -5,4 +5,4 @@ interface Args {
   program: Program
 }
 
-export const getPaymentsForGrant = () => {}
+export const fetchPaymentsForGrant = () => {}

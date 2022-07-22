@@ -5,4 +5,4 @@ interface Args {
   program: Program
 }
 
-export const getAllSubmissionsForGrant = () => {}
+export const fetchAllSubmissionsForGrant = () => {}
