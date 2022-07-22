@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "next dev",
+    "start": "yarn gen-env && env $(env-ts env.ts app) next dev",
     "build": "next build",
     "serve": "next start",
     "gen-env": "env-ts env.ts app ./src/__generated__/_env.ts NEXT_PUBLIC_",

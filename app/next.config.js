@@ -32,7 +32,11 @@ const config = {
   productionBrowserSourceMaps: false,
   eslint: { ignoreDuringBuilds: true },
   images: {
-    domains: ['res.cloudinary.com', 'avatars.ahoy.fund'],
+    domains: [
+      'res.cloudinary.com',
+      // TODO: delete this before going live
+      'pbs.twimg.com',
+    ],
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
