@@ -1,6 +1,9 @@
-import { useWallet } from '@solana/wallet-adapter-react'
+import { useAnchorWallet } from '@solana/wallet-adapter-react'
+import { PublicKey } from '@solana/web3.js'
 import { css } from 'linaria'
 import { NextPage } from 'next'
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
 
 import { Layout } from '../../components/Layout'
 import { Spacers } from '../../components/Spacers'
@@ -8,6 +11,9 @@ import { BrandTwitterSVG } from '../../components/svgs/BrandTwitterSVG'
 import { ExternalLinkSVG } from '../../components/svgs/ExternalLinkSVG'
 import { PlusSVG } from '../../components/svgs/PlusSVG'
 import { WalletSVG } from '../../components/svgs/WalletSVG'
+import { fetchGrantWithSubmissions } from '../../network/fetch/fetchGrantWithSubmissions'
+import { Grant } from '../../network/types/models/Grant'
+import { Submission } from '../../network/types/models/Submission'
 import { colors } from '../../ui/colors'
 import { displayPublicKey } from '../../utils/displayPublicKey'
 import { GrantInfo } from '../index.page'
@@ -234,7 +240,27 @@ const sampleSubmissionList = [
 ]
 
 const GrantPage: NextPage = () => {
-  const { wallet } = useWallet()
+  const router = useRouter()
+  const wallet = useAnchorWallet()
+
+  const [grant, setGrant] = useState<Grant | null>(null)
+  const [submissions, setSubmissions] = useState<Submission[] | null>(null)
+
+  const { uid } = router.query
+
+  useEffect(() => {
+    ;(async () => {
+      if (!wallet) return
+      // TODO add some validation on UID from router query
+      const [grant, submissions] = await fetchGrantWithSubmissions({
+        grantPubkey: new PublicKey(uid as string),
+        wallet,
+      })
+      setGrant(grant)
+      setSubmissions(submissions)
+    })()
+  }, [uid, wallet])
+
   return (
     <Layout>
       <div className={headlineContainer}>
