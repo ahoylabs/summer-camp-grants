@@ -4,7 +4,8 @@
         "lint": "tsc && eslint tests",
         "anchor": "./scripts/anchor-pinned.sh",
         "build": "./scripts/replace-solana-program-id.sh yarn anchor build",
-        "test": "./scripts/replace-solana-program-id.sh yarn anchor test"
+        "test": "./scripts/replace-solana-program-id.sh yarn anchor test",
+        "deploy": "./scripts/replace-solana-program-id.sh yarn anchor deploy"
     },
     "dependencies": {
         "@project-serum/anchor": "^0.24.2",

@@ -53,7 +53,7 @@ before("initialize accounts", async () => {
     submitter.publicKey
   );
 
-  // Initialize simulated USDC faucet (which will also create the mint)
+  // Initialize simulated USDC faucet (this creates the mint)
   await tokenFaucet.methods
     .initializeFaucet(mintPdaBump)
     .accounts({
