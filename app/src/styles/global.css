@@ -83,3 +83,25 @@ input::-webkit-inner-spin-button {
 input[type='number'] {
   -moz-appearance: textfield;
 }
+
+.wallet-adapter-button.wallet-adapter-button-trigger {
+  background-color: transparent;
+  border: 1.5px solid #fff;
+  border-radius: 8px;
+  padding: 6px 12px;
+  margin: 0;
+  margin-left: 24px;
+  line-height: inherit;
+  height: inherit;
+}
+@media only screen and (max-width: 680px) {
+  .wallet-adapter-button.wallet-adapter-button-trigger {
+    display: none;
+  }
+}
+
+.wallet-adapter-button-start-icon img,
+.wallet-adapter-button-start-icon {
+  height: 16px;
+  width: 16px;
+}

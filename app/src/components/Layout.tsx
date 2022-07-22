@@ -1,3 +1,4 @@
+import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
 import { css } from 'linaria'
 import Link from 'next/link'
 import { FC } from 'react'
@@ -25,6 +26,7 @@ const header = css`
   background: linear-gradient(249.51deg, #00ffa3 -47.16%, #dc1fff 140.55%);
   z-index: 1;
   box-shadow: 0px 0px 14px 0px ${colors.shadow.thin};
+  height: 64px;
 `
 const headerContent = css`
   width: 100%;
@@ -60,15 +62,6 @@ const poweredByContainer = css`
   color: ${colors.text.whitePrimary};
   padding: 8px;
   border-radius: 0 0 4px 0;
-`
-
-const connectWalletContainer = css`
-  border: 1px solid ${colors.text.whitePrimary};
-  border-radius: 8px;
-  padding: 6px 12px;
-  @media only screen and (max-width: 680px) {
-    display: none;
-  }
 `
 
 const poweredByText = css`
@@ -113,8 +106,7 @@ export const Layout: FC<{ children: React.ReactNode }> = ({ children }) => (
             <Spacers.Horizontal._8px />
             <AhoyLogoSVG width={50} />
           </a>
-          <Spacers.Horizontal._24px />
-          <div className={connectWalletContainer}>Connect Wallet</div>
+          <WalletMultiButton />
         </div>
       </div>
     </div>

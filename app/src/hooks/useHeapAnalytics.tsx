@@ -3,9 +3,7 @@ import React, { FC, useEffect } from 'react'
 
 import { isHeapEnabled } from '../constants/environment'
 
-export const AnalyticsWrapper: FC<{ children: typeof React.Children }> = (
-  props,
-) => {
+export const AnalyticsWrapper: FC<{ children: React.ReactNode }> = (props) => {
   useHeapAnalytics()
   return <>{props.children}</>
 }

@@ -10,7 +10,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@babel/core": "^7.18.9",
     "@babel/runtime": "7.x",
+    "@babel/traverse": "^7.18.9",
     "@linaria/babel-preset": "3.0.0-beta.19",
     "@linaria/shaker": "3.0.0-beta.19",
     "@linaria/webpack-loader": "3.0.0-beta.19",
@@ -21,6 +23,7 @@
     "@solana/spl-token": "0.2.0",
     "@solana/wallet-adapter-base": "0.9.9",
     "@solana/wallet-adapter-react": "0.15.8",
+    "@solana/wallet-adapter-react-ui": "^0.9.10",
     "@solana/wallet-adapter-wallets": "0.16.8",
     "@solana/web3.js": "1.48.0",
     "axios": "0.27.2",

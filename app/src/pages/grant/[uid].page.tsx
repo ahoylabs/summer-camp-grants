@@ -169,6 +169,9 @@ const singleSubmissionSubTag = css`
   font-size: 14px;
   color: ${colors.text.blackSecondary};
   padding-right: 8px;
+  display: inline-flex;
+  align-items: center;
+  line-height: 1.4;
 `
 const singleSubmissionSubmittedWallet = css`
   font-size: 14px;
@@ -176,6 +179,8 @@ const singleSubmissionSubmittedWallet = css`
   align-items: center;
   color: ${colors.spot.green};
   font-weight: medium;
+  position: relative;
+  top: 2px;
   :hover {
     color: ${colors.hover.green};
     text-decoration: underline;
@@ -258,7 +263,7 @@ const GrantPage: NextPage = () => {
           {': '}
           <Spacers.Horizontal._8px />
           <span className={grantAmountText}>
-            ${Math.floor(sampleGrant.grantAmountUSD)} Grant
+            ${Math.floor(sampleGrant.grantAmountUSD).toLocaleString()} Grant
           </span>
         </h1>
       </div>
@@ -295,7 +300,8 @@ const GrantPage: NextPage = () => {
         <div className={leftSideWalletContainer}>
           <div className={leftSideWalletContainerBalance}>
             <WalletSVG width={24} />
-            <Spacers.Horizontal._4px />${sampleGrant.currentBalance} USDC
+            <Spacers.Horizontal._4px />$
+            {Math.floor(sampleGrant.currentBalance).toLocaleString()} USDC
           </div>
           <Spacers.Vertical._4px />
           <div className={leftSideWalletContainerAddress}>
@@ -323,7 +329,9 @@ const GrantPage: NextPage = () => {
             Connect Wallet to Add Submission
           </div>
         </div>
-      ) : null}
+      ) : (
+        <div>Add Submission - todo</div>
+      )}
       <Spacers.Vertical._32px />
       {sampleSubmissionList.map((sub, i) => (
         <div
@@ -338,7 +346,12 @@ const GrantPage: NextPage = () => {
           />
           <Spacers.Horizontal._24px />
           <div className={singleSubmissionInfoContent}>
-            <a href={sub.githubURL} className={singleSubmissionTitle}>
+            <a
+              href={sub.githubURL}
+              target="_blank"
+              className={singleSubmissionTitle}
+              rel="noreferrer"
+            >
               {sub.title}
               <Spacers.Horizontal._4px />
               <ExternalLinkSVG width={16} />
@@ -359,6 +372,7 @@ const GrantPage: NextPage = () => {
                 {displayPublicKey(sub.walletPublicKey)}
               </a>
             </div>
+            <Spacers.Vertical._4px />
             <div>
               <span className={singleSubmissionSubTag}>Contact:</span>
               <span className={singleSubmissionContact}>{sub.contact}</span>
