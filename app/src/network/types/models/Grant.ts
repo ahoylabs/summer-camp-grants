@@ -2,7 +2,7 @@ import { PublicKey } from '@solana/web3.js'
 import dayjs, { Dayjs } from 'dayjs'
 import Decimal from 'decimal.js-light'
 
-import { AhoyGrants } from '../../../../../contract/target/types/ahoy_grants'
+import { AhoyGrants } from '../../../__generated__/ahoy_grants'
 import { ContentSHA256 } from '../ContentSHA256'
 import { TypedProgram } from '../typedProgram'
 

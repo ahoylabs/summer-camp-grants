@@ -2,7 +2,7 @@ import { AnchorProvider, Program } from '@project-serum/anchor'
 import { AnchorWallet } from '@solana/wallet-adapter-react'
 import { Connection } from '@solana/web3.js'
 
-import { AhoyGrants, IDL } from '../../../contract/target/types/ahoy_grants'
+import { AhoyGrants, IDL } from '../__generated__/ahoy_grants'
 import { NEXT_PUBLIC_PROGRAM_ID } from './../__generated__/_env'
 import { TypedProgram } from './types/typedProgram'
 
