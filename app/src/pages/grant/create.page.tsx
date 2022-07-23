@@ -1,6 +1,5 @@
 import { useAnchorWallet } from '@solana/wallet-adapter-react'
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
-import { createHash } from 'crypto'
 import { Field, Form, Formik, FormikHelpers } from 'formik'
 import { css } from 'linaria'
 import { NextPage } from 'next'
@@ -17,7 +16,6 @@ import { WalletSVG } from '../../components/svgs/WalletSVG'
 import { urls } from '../../constants/urls'
 import { useConnectedWalletBalance } from '../../hooks/useConnectedWalletBalance'
 import { createGrant } from '../../network/rpc/createGrant'
-import { ContentSHA256 } from '../../network/types/ContentSHA256'
 import { colors } from '../../ui/colors'
 import { displayPublicKey } from '../../utils/displayPublicKey'
 
@@ -201,58 +199,30 @@ const CreateGrantPage: NextPage = () => {
       <Spacers.Vertical._16px />
       <h1 className={heading}>Create Grant</h1>
       <Spacers.Vertical._48px />
-      {/* <Formik
-        initialValues={
-          {
-            companyName: '',
-          } as FormValuesSchema
-        }
-        onSubmit={async (
-          { companyName }: FormValuesSchema,
-          { setSubmitting }: FormikHelpers<FormValuesSchema>,
-        ) => {
-          if (!wallet) return
-
-          const grantPubkey = await createGrant({
-            imageFile: null,
-            companyName: 'Tulip Protocol',
-            twitterSlug: 'TulipProtocol',
-            websiteURL: 'tulip.garden',
-            description:
-              'The Tulip Farmers Fund is officially here! Our new $500,000 community grant program dedicated to support builders and the #Solana community looking to build projects within the $TULIP Ecosystem.',
-            wallet: wallet,
-          })
-          router.push(urls.grant(grantPubkey))
-          setSubmitting(false)
-        }}
-      >
-        <Form>
-          <label htmlFor="companyName">Company Name</label>
-          <Field id="companyName" name="companyName" placeholder="John" />
-
-          <button style={{ border: '1px solid black' }} type="submit">
-            Submit
-          </button>
-        </Form>
-      </Formik> */}
       {wallet ? (
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
           onSubmit={async (
-            { companyName }: FormValues,
+            {
+              companyName,
+              description,
+              imageFile,
+              twitter,
+              website,
+            }: FormValues,
             { setSubmitting }: FormikHelpers<FormValues>,
           ) => {
             if (!wallet) return
-            const fakeContent = [
-              ...createHash('sha256').update(companyName, 'utf8').digest(),
-            ] as ContentSHA256
-
-            const grant = await createGrant({
-              contentSha256: fakeContent,
-              wallet: wallet,
+            const grantPubkey = await createGrant({
+              imageFile,
+              companyName,
+              twitterSlug: twitter,
+              websiteURL: website,
+              description,
+              wallet,
             })
-            router.push(urls.grant(grant.publicKey))
+            router.push(urls.grant(grantPubkey))
             setSubmitting(false)
           }}
         >

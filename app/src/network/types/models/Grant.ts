@@ -16,7 +16,7 @@ export interface Grant {
   publicKey: PublicKey
 }
 
-type AnchorGrant = Awaited<
+export type AnchorGrant = Awaited<
   ReturnType<TypedProgram<AhoyGrants>['account']['grant']['fetch']>
 >
 
