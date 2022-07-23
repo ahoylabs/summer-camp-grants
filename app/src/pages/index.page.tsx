@@ -39,7 +39,7 @@ const heading = css`
 `
 
 const solanaSVGSty = css`
-  margin: auto;
+  margin: 0 auto;
   filter: drop-shadow(0px 0px 3px ${colors.hover.fancy});
   @media only screen and (max-width: 555px) {
     width: 400px;

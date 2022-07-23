@@ -239,7 +239,7 @@ const CreateGrantPage: NextPage = () => {
                     <Field id="twitter" name="twitter" placeholder="@solana" />
                   </div>
                   <div>
-                    <label htmlFor="website">Company Name</label>
+                    <label htmlFor="website">Website</label>
                     <Field
                       id="website"
                       name="website"
@@ -286,9 +286,9 @@ const CreateGrantPage: NextPage = () => {
                 </div>
                 <Spacers.Vertical._24px />
                 <label htmlFor="imageFile">Image</label>
-                <ImageDropzone setFieldValue={setFieldValue} />
+                <ImageDropzone imageWidth={48} setFieldValue={setFieldValue} />
                 <Spacers.Vertical._48px />
-                {hasClickedSubmit && errorMessage.length && (
+                {hasClickedSubmit && errorMessage.length ? (
                   <>
                     <div className={errorList}>
                       <span>Errors:</span>
@@ -300,7 +300,7 @@ const CreateGrantPage: NextPage = () => {
                     </div>
                     <Spacers.Vertical._24px />
                   </>
-                )}
+                ) : null}
                 <button
                   onClick={() => setHasClickedSubmit(true)}
                   className={submitButton}
