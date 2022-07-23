@@ -5,20 +5,36 @@ import { Keypair, PublicKey } from '@solana/web3.js'
 import { connection } from '../connection'
 import { getGrantProgram } from '../getGrantProgram'
 import { getUSDCAssociatedTokenAddress } from '../getUSDCAssociatedTokenAddress'
-import { ContentSHA256 } from '../types/ContentSHA256'
+import { pinSubmissionToIPFS } from '../ipfs/pinToIPFS'
 import { NEXT_PUBLIC_USDC_MINT_ADDR } from './../../__generated__/_env'
 
 interface Args {
-  contentSha256: ContentSHA256
   grantAccount: PublicKey
   wallet: AnchorWallet
+  contact: string
+  description: string
+  githubURL: string
+  imageFile: File | null
+  title: string
 }
 
 export const createSubmission = async ({
-  contentSha256,
   grantAccount,
   wallet,
+  contact,
+  description,
+  githubURL,
+  title,
+  imageFile,
 }: Args) => {
+  const contentSha256 = await pinSubmissionToIPFS(
+    contact,
+    description,
+    githubURL,
+    title,
+    imageFile,
+  )
+
   const program = getGrantProgram(wallet, connection)
   const submissionKeypair = Keypair.generate()
   const associatedUSDCAccount = await getUSDCAssociatedTokenAddress(

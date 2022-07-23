@@ -148,20 +148,6 @@ const connectWalletToAddSubmitText = css`
   line-height: 1.4;
 `
 
-const sampleSubmission: SubmissionInfo = {
-  contact: 'DM me @thisisareallylongtwitternameandIcannotuinders',
-  description: 'This is a great project. I hope the team at Tulip likes it',
-  githubURL: 'https://github.com/biw/comic-sans-everything',
-  imageURL: 'https://loremflickr.com/128/128/dog',
-  title: 'Really Great Project',
-  walletPublicKey: '7cre8AiBkVzWwFQtCA7TnEmh8CGTjZ87KJC5Mu3dZxwE',
-}
-const sampleSubmissionList = [
-  sampleSubmission,
-  sampleSubmission,
-  sampleSubmission,
-]
-
 const GrantPage: NextPage = () => {
   const router = useRouter()
   const wallet = useAnchorWallet()
@@ -174,10 +160,21 @@ const GrantPage: NextPage = () => {
 
   useEffect(() => {
     ;(async () => {
+      if (!uid) return
+      const isValidPubkey = PublicKey.isOnCurve(uid as string)
+      if (!isValidPubkey) {
+        console.warn('Not a valid grant account.')
+        // TODO add error handling for 404 and invalid pubkey
+      }
+
+      // TODO error handling for if the grant is not found
       const { grant, submissions } = await fetchGrantWithSubmissions({
         grantPubkey: new PublicKey(uid as string),
         wallet: anchorWalletWithFallback(wallet),
       })
+      setGrant(grant)
+      setSubmissions(submissions)
+
       try {
         const account = await getAccount(
           connection,
@@ -186,27 +183,20 @@ const GrantPage: NextPage = () => {
         const balanceUSDC = convertUnitsToUSDC(account.amount)
         setUsdcBalance(balanceUSDC)
       } catch (error) {
-        // there's a chance it could have been destroyed
+        // there's a chance the ATA could have been destroyed
         setUsdcBalance(0)
       }
-      setGrant(grant)
-      setSubmissions(submissions)
     })()
   }, [uid, wallet])
 
   if (!grant) return <div>'loading...'</div>
 
   const {
-    createdAt,
-    info,
+    info: { companyName, description, imageCID, twitterSlug, websiteURL },
     associatedUSDCTokenAccount,
     initialAmountUSDC,
     publicKey,
   } = grant
-
-  console.log(publicKey.toBase58(), wallet?.publicKey.toBase58())
-  const { companyName, description, imageCID, twitterSlug, websiteURL } =
-    grant.info
 
   return (
     <Layout>
@@ -298,13 +288,15 @@ const GrantPage: NextPage = () => {
         <AddGrantSubmission
           publicKey={wallet.publicKey.toBase58()}
           companyName={companyName}
+          grantPubkey={publicKey}
         />
       )}
       <Spacers.Vertical._32px />
-      {submissions.map((sub, i) => (
-        // todo: once we get this wired up we should use the timestamp
-        <SubmissionCard showPayButton submission={sub} key={i} />
-      ))}
+      {submissions
+        .sort((a, b) => b.submittedAt.diff(a.submittedAt))
+        .map((sub, i) => (
+          <SubmissionCard showPayButton submission={sub} key={i} />
+        ))}
     </Layout>
   )
 }

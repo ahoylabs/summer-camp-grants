@@ -8,10 +8,8 @@ import { AhoyGrants } from './../../../__generated__/ahoy_grants'
 
 export interface Submission {
   amountWon: Decimal
-  createdAt: Dayjs
   grant: PublicKey
   info: SubmissionForIPFS
-  initialAmount: Decimal
   payTo: PublicKey
   publicKey: PublicKey
   submittedAt: Dayjs
@@ -27,12 +25,12 @@ export const formatSubmission = (
   account: AnchorSubmission,
   submissionInfo: SubmissionForIPFS,
 ): Submission => {
+  console.log(account)
+
   return {
     amountWon: new Decimal(account.amountWon.toString()),
-    createdAt: dayjs.unix(account.createdAt.toNumber()),
     grant: account.grant,
     info: submissionInfo,
-    initialAmount: new Decimal(account.initialAmount.toString()),
     payTo: account.payTo,
     publicKey: pubkey,
     submittedAt: dayjs.unix(account.submittedAt.toNumber()),

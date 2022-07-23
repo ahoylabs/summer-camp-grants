@@ -1,7 +1,12 @@
+import { useAnchorWallet } from '@solana/wallet-adapter-react'
+import { PublicKey } from '@solana/web3.js'
 import { Field, Form, Formik, FormikHelpers } from 'formik'
 import { css, cx } from 'linaria'
+import { useRouter } from 'next/router'
 import { FC, useState } from 'react'
 import { mixed, object, SchemaOf, string } from 'yup'
+import { urls } from '../constants/urls'
+import { createSubmission } from '../network/rpc/createSubmission'
 
 import { colors } from '../ui/colors'
 import { displayPublicKey } from '../utils/displayPublicKey'
@@ -140,7 +145,7 @@ const initialValues: FormValues = {
 const validationSchema: SchemaOf<FormValues> = object().shape({
   contactInfo: string().trim().required('Contact Info is required'),
   description: string().trim().required('Description is required'),
-  imageFile: mixed().required('Image is required'),
+  imageFile: mixed().optional(),
   name: string().trim().required('Project Name is required'),
   linkToRepo: string()
     .url('Link to Repo must be a valid URL (including https://)')
@@ -149,10 +154,14 @@ const validationSchema: SchemaOf<FormValues> = object().shape({
 
 export const AddGrantSubmission: FC<{
   companyName: string
+  grantPubkey: PublicKey
   publicKey: string
-}> = ({ companyName, publicKey }) => {
+}> = ({ companyName, publicKey, grantPubkey }) => {
+  const wallet = useAnchorWallet()
+  const router = useRouter()
   const [hasClickedSubmit, setHasClickedSubmit] = useState(false)
   const [showForm, setShowForm] = useState(false)
+
   return (
     <div
       className={cx(container, !showForm && clickableContainer)}
@@ -175,7 +184,26 @@ export const AddGrantSubmission: FC<{
           { contactInfo, description, imageFile, name, linkToRepo }: FormValues,
           { setSubmitting }: FormikHelpers<FormValues>,
         ) => {
-          setSubmitting(false)
+          try {
+            if (!wallet) return
+            await createSubmission({
+              contact: contactInfo,
+              description,
+              imageFile,
+              title: name,
+              githubURL: linkToRepo,
+              wallet,
+              grantAccount: grantPubkey,
+            })
+
+            // TODO add a snackbar notification or something
+
+            router.reload()
+          } catch (error) {
+            console.error(error)
+          } finally {
+            setSubmitting(false)
+          }
         }}
       >
         {({ setFieldValue, isSubmitting, errors, dirty }) => {
