@@ -1,10 +1,14 @@
 import Compressor from 'compressorjs'
 
-export const compressImage = async (imageFile: File): Promise<File> =>
+export const compressImage = async (
+  imageFile: File,
+  height: number,
+  width: number,
+): Promise<File> =>
   new Promise((resolve, reject) => {
     new Compressor(imageFile, {
-      width: 48,
-      height: 48,
+      width,
+      height,
       quality: 0.9, // 1 makes the image larger
       resize: 'cover',
       success(file) {
