@@ -175,8 +175,6 @@ export const AddGrantSubmission: FC<{
           { contactInfo, description, imageFile, name, linkToRepo }: FormValues,
           { setSubmitting }: FormikHelpers<FormValues>,
         ) => {
-          alert('nice job, it worked')
-
           setSubmitting(false)
         }}
       >
@@ -192,8 +190,9 @@ export const AddGrantSubmission: FC<{
               <label>Wallet to Receive Funds</label>
               <div className={walletSubmissionCallout}>
                 <div>
-                  If you submission is accepted, funds will be sent to you
-                  current logged-in wallet address.
+                  If your submission is accepted, funds will be sent to the{' '}
+                  <b>USDC associated token account</b> owned by the Solana
+                  wallet address you are logged in with right now.
                 </div>
                 <Spacers.Vertical._8px />
                 <div className="secondLine">

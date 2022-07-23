@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react'
 import { AddGrantSubmission } from '../../components/AddGrantSubmission'
 import { Layout } from '../../components/Layout'
 import { Spacers } from '../../components/Spacers'
-import { SubmissionCard, SubmissionInfo } from '../../components/SubmissionCard'
+import { SubmissionCard } from '../../components/SubmissionCard'
 import { BrandTwitterSVG } from '../../components/svgs/BrandTwitterSVG'
 import { ExternalLinkSVG } from '../../components/svgs/ExternalLinkSVG'
 import { WalletSVG } from '../../components/svgs/WalletSVG'
@@ -21,6 +21,7 @@ import { fetchGrantWithSubmissions } from '../../network/fetch/fetchGrantWithSub
 import { Grant } from '../../network/types/models/Grant'
 import { Submission } from '../../network/types/models/Submission'
 import { colors } from '../../ui/colors'
+import { anchorWalletWithFallback } from '../../utils/anchorWalletWithFallback'
 import { displayPublicKey } from '../../utils/displayPublicKey'
 
 const headlineContainer = css`
@@ -167,21 +168,17 @@ const GrantPage: NextPage = () => {
 
   const [grant, setGrant] = useState<Grant | null>(null)
   const [usdcBalance, setUsdcBalance] = useState(0)
-  const [submissions, setSubmissions] = useState<Submission[] | null>(null)
+  const [submissions, setSubmissions] = useState<Submission[]>([])
 
   const { uid } = router.query
 
   useEffect(() => {
     ;(async () => {
-      if (!wallet) return
-
-      // TODO add some validation on UID from router query
-      const grant = await fetchGrantWithSubmissions({
+      const { grant, submissions } = await fetchGrantWithSubmissions({
         grantPubkey: new PublicKey(uid as string),
-        wallet,
+        wallet: anchorWalletWithFallback(wallet),
       })
       try {
-        // usdc ATA
         const account = await getAccount(
           connection,
           grant.associatedUSDCTokenAccount,
@@ -189,12 +186,11 @@ const GrantPage: NextPage = () => {
         const balanceUSDC = convertUnitsToUSDC(account.amount)
         setUsdcBalance(balanceUSDC)
       } catch (error) {
-        // could have been destroyed
+        // there's a chance it could have been destroyed
         setUsdcBalance(0)
       }
-
       setGrant(grant)
-      // setSubmissions(submissions)
+      setSubmissions(submissions)
     })()
   }, [uid, wallet])
 
@@ -305,13 +301,9 @@ const GrantPage: NextPage = () => {
         />
       )}
       <Spacers.Vertical._32px />
-      {sampleSubmissionList.map((sub, i) => (
+      {submissions.map((sub, i) => (
         // todo: once we get this wired up we should use the timestamp
-        <SubmissionCard
-          showPayButton
-          submission={sub}
-          key={sub.title + sub.walletPublicKey + i}
-        />
+        <SubmissionCard showPayButton submission={sub} key={i} />
       ))}
     </Layout>
   )

@@ -1,4 +1,6 @@
+import { getAccount } from '@solana/spl-token'
 import { AnchorWallet } from '@solana/wallet-adapter-react'
+import { PublicKey } from '@solana/web3.js'
 import axios, { AxiosResponse } from 'axios'
 
 import { urls } from '../../constants/urls'
@@ -25,7 +27,14 @@ export const fetchAllGrants = async ({ wallet }: Args) => {
         contentSha256ToIpfsCID(g.account.contentSha256 as ContentSHA256),
       ),
     )
-    const grant = formatGrant(g.publicKey, g.account, res.data as GrantForIPFS)
+    const ata = await getAccount(connection, new PublicKey(g.account.wallet))
+    const owner = ata.owner
+    const grant = formatGrant(
+      g.publicKey,
+      g.account,
+      res.data as GrantForIPFS,
+      owner,
+    )
     grants.push(grant)
   }
   return grants

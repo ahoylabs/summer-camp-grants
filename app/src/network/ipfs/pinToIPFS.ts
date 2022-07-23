@@ -8,10 +8,12 @@ import { GrantForIPFS, PinataResponse, SubmissionForIPFS } from './types'
 
 export const pinFileToIPFS = async (
   imageFile: File | null,
+  type: 'grant' | 'submission',
 ): Promise<string | null> => {
   if (!imageFile) return Promise.resolve(null)
   const formData = new FormData()
-  const compressedImage = await compressImage(imageFile)
+  const dimension = type === 'grant' ? 48 : 128
+  const compressedImage = await compressImage(imageFile, dimension, dimension)
   formData.append('file', compressedImage)
   const res = await axios.post(urls.api.pinFileToIPFS, formData)
   const data: PinataResponse = await res.data
@@ -25,7 +27,7 @@ export const pinGrantToIPFS = async (
   websiteURL: string,
   imageFile: File | null,
 ): Promise<ContentSHA256> => {
-  const imageIpfsCID: string | null = await pinFileToIPFS(imageFile)
+  const imageIpfsCID: string | null = await pinFileToIPFS(imageFile, 'grant')
   const ipfsObj: GrantForIPFS = {
     companyName,
     description,
@@ -46,7 +48,10 @@ export const pinSubmissionToIPFS = async (
   title: string,
   imageFile: File | null,
 ): Promise<ContentSHA256> => {
-  const imageIpfsCID: string | null = await pinFileToIPFS(imageFile)
+  const imageIpfsCID: string | null = await pinFileToIPFS(
+    imageFile,
+    'submission',
+  )
   const ipfsObj: SubmissionForIPFS = {
     contact,
     description,

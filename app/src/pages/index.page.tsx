@@ -84,11 +84,8 @@ const Home: NextPage = () => {
   return (
     <Layout>
       <SolanaSummerSVG width={500} className={solanaSVGSty} />
-      <Spacers.Vertical._16px />
-      <h1 className={heading}>
-        Solana Summer Camp Hackathon
-        <br /> Ecosystem Grants
-      </h1>
+      <Spacers.Vertical._24px />
+      <h1 className={heading}>Solana Ecosystem Grants</h1>
       <NavMenu />
       <Spacers.Vertical._48px />
       <div className={grantsContainer}>

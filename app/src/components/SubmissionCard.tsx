@@ -1,20 +1,13 @@
 import { css } from 'linaria'
 import { FC } from 'react'
+import { urls } from '../constants/urls'
+import { Submission } from '../network/types/models/Submission'
 
 import { colors } from '../ui/colors'
 import { displayPublicKey } from '../utils/displayPublicKey'
 import { Spacers } from './Spacers'
 import { ExternalLinkSVG } from './svgs/ExternalLinkSVG'
 import { WalletSVG } from './svgs/WalletSVG'
-
-export type SubmissionInfo = {
-  contact: string
-  description: string
-  githubURL: string
-  imageURL: string
-  title: string
-  walletPublicKey: string
-}
 
 const singleSubmissionContainer = css`
   padding: 32px 0;
@@ -97,51 +90,53 @@ const payProjectButton = css`
 
 export const SubmissionCard: FC<{
   showPayButton: boolean
-  submission: SubmissionInfo
+  submission: Submission
 }> = ({ submission, showPayButton }) => (
   <div className={singleSubmissionContainer}>
-    {showPayButton && <button className={payProjectButton}>Pay Project</button>}
-    {/* eslint-disable-next-line @next/next/no-img-element */}
-    <img
-      src={submission.imageURL}
-      alt={`image for ${submission.title}`}
-      className={singleSubmissionImage}
-    />
-
+    {submission.info.imageCID && (
+      /* eslint-disable-next-line @next/next/no-img-element */
+      <img
+        src={urls.image(submission.info.imageCID)}
+        alt={`image for ${submission.info.title}`}
+        className={singleSubmissionImage}
+      />
+    )}
     <Spacers.Horizontal._24px />
     <div className={singleSubmissionInfoContent}>
       <a
-        href={submission.githubURL}
+        href={submission.info.githubURL}
         target="_blank"
         className={singleSubmissionTitle}
         rel="noreferrer"
       >
-        {submission.title}
+        {submission.info.title}
         <Spacers.Horizontal._4px />
         <ExternalLinkSVG width={16} />
       </a>
       <Spacers.Vertical._24px />
       <div className={singleSubmissionDescription}>
-        {submission.description}
+        {submission.info.description}
       </div>
       <Spacers.Vertical._24px />
       <div>
-        <span className={singleSubmissionSubTag}>Submitted by:</span>
+        <span className={singleSubmissionSubTag}>Submission Account:</span>
         <a
-          href={`https://explorer.solana.com/address/${submission.walletPublicKey}`}
+          href={`https://explorer.solana.com/address/${submission.publicKey.toBase58()}`}
           target="_blank"
           className={singleSubmissionSubmittedWallet}
           rel="noreferrer"
         >
           <WalletSVG width={16} />
           <Spacers.Horizontal._4px />
-          {displayPublicKey(submission.walletPublicKey)}
+          {displayPublicKey(submission.publicKey.toBase58())}
         </a>
       </div>
       <Spacers.Vertical._4px />
       <div>
         <span className={singleSubmissionSubTag}>Contact:</span>
-        <span className={singleSubmissionContact}>{submission.contact}</span>
+        <span className={singleSubmissionContact}>
+          {submission.info.contact}
+        </span>
       </div>
     </div>
   </div>
