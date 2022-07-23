@@ -288,7 +288,7 @@ const CreateGrantPage: NextPage = () => {
                 <label htmlFor="imageFile">Image</label>
                 <ImageDropzone imageWidth={48} setFieldValue={setFieldValue} />
                 <Spacers.Vertical._48px />
-                {hasClickedSubmit && errorMessage.length && (
+                {hasClickedSubmit && errorMessage.length ? (
                   <>
                     <div className={errorList}>
                       <span>Errors:</span>
@@ -300,7 +300,7 @@ const CreateGrantPage: NextPage = () => {
                     </div>
                     <Spacers.Vertical._24px />
                   </>
-                )}
+                ) : null}
                 <button
                   onClick={() => setHasClickedSubmit(true)}
                   className={submitButton}

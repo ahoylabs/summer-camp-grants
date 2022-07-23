@@ -224,8 +224,7 @@ const sampleSubmission: SubmissionInfo = {
   contact: 'DM me @thisisareallylongtwitternameandIcannotuinders',
   description: 'This is a great project. I hope the team at Tulip likes it',
   githubURL: 'https://github.com/biw/comic-sans-everything',
-  imageURL:
-    'https://loremflickr.com/cache/resized/65535_51976730205_07c53e56b5_q_128_128_nofilter.jpg',
+  imageURL: 'https://loremflickr.com/128/128/dog',
   title: 'Really Great Project',
   walletPublicKey: '7cre8AiBkVzWwFQtCA7TnEmh8CGTjZ87KJC5Mu3dZxwE',
 }
@@ -373,7 +372,7 @@ const GrantPage: NextPage = () => {
       ) : (
         <AddGrantSubmission
           publicKey={wallet.publicKey.toBase58()}
-          companyName={sampleGrant.company.name}
+          companyName={companyName}
         />
       )}
       <Spacers.Vertical._32px />
