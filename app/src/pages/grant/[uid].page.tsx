@@ -212,28 +212,13 @@ type SubmissionInfo = {
   walletPublicKey: string
 }
 
-const sampleSubmission: SubmissionInfo = {
-  contact: 'DM me @thisisareallylongtwitternameandIcannotuinders',
-  description: 'This is a great project. I hope the team at Tulip likes it',
-  githubURL: 'https://github.com/biw/comic-sans-everything',
-  imageURL:
-    'https://loremflickr.com/cache/resized/65535_51976730205_07c53e56b5_q_128_128_nofilter.jpg',
-  title: 'Really Great Project',
-  walletPublicKey: '7cre8AiBkVzWwFQtCA7TnEmh8CGTjZ87KJC5Mu3dZxwE',
-}
-const sampleSubmissionList = [
-  sampleSubmission,
-  sampleSubmission,
-  sampleSubmission,
-]
-
 const GrantPage: NextPage = () => {
   const router = useRouter()
   const wallet = useAnchorWallet()
 
   const [grant, setGrant] = useState<Grant | null>(null)
   const [usdcBalance, setUsdcBalance] = useState(0)
-  const [submissions, setSubmissions] = useState<Submission[] | null>(null)
+  const [submissions, setSubmissions] = useState<Submission[]>([])
 
   const { uid } = router.query
 
@@ -261,8 +246,7 @@ const GrantPage: NextPage = () => {
 
   if (!grant) return <div>'loading...'</div>
 
-  const { createdAt, info, associatedUSDCTokenAccount, initialAmountUSDC } =
-    grant
+  const { associatedUSDCTokenAccount, initialAmountUSDC } = grant
   const { companyName, description, imageCID, twitterSlug, websiteURL } =
     grant.info
 
@@ -356,49 +340,54 @@ const GrantPage: NextPage = () => {
         <div>Add Submission - todo</div>
       )}
       <Spacers.Vertical._32px />
-      {sampleSubmissionList.map((sub, i) => (
-        <div
-          key={sub.walletPublicKey + sub.description + i}
-          className={singleSubmissionContainer}
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={sub.imageURL}
-            alt={`image for ${sub.title}`}
-            className={singleSubmissionImage}
-          />
+      {submissions.map((sub, i) => (
+        <div key={i} className={singleSubmissionContainer}>
+          {sub.info.imageCID && (
+            /* eslint-disable-next-line @next/next/no-img-element */
+            <img
+              src={urls.image(sub.info.imageCID)}
+              alt={`image for ${sub.info.title}`}
+              className={singleSubmissionImage}
+            />
+          )}
           <Spacers.Horizontal._24px />
           <div className={singleSubmissionInfoContent}>
             <a
-              href={sub.githubURL}
+              href={sub.info.githubURL}
               target="_blank"
               className={singleSubmissionTitle}
               rel="noreferrer"
             >
-              {sub.title}
+              {sub.info.title}
               <Spacers.Horizontal._4px />
               <ExternalLinkSVG width={16} />
             </a>
             <Spacers.Vertical._24px />
-            <div className={singleSubmissionDescription}>{sub.description}</div>
+            <div className={singleSubmissionDescription}>
+              {sub.info.description}
+            </div>
             <Spacers.Vertical._24px />
             <div>
-              <span className={singleSubmissionSubTag}>Submitted by:</span>
+              <span className={singleSubmissionSubTag}>
+                Submission Account:
+              </span>
               <a
-                href={`https://explorer.solana.com/address/${sub.walletPublicKey}`}
+                href={`https://explorer.solana.com/address/${sub.publicKey.toBase58()}`}
                 target="_blank"
                 className={singleSubmissionSubmittedWallet}
                 rel="noreferrer"
               >
                 <WalletSVG width={16} />
                 <Spacers.Horizontal._4px />
-                {displayPublicKey(sub.walletPublicKey)}
+                {displayPublicKey(sub.publicKey.toBase58())}
               </a>
             </div>
             <Spacers.Vertical._4px />
             <div>
               <span className={singleSubmissionSubTag}>Contact:</span>
-              <span className={singleSubmissionContact}>{sub.contact}</span>
+              <span className={singleSubmissionContact}>
+                {sub.info.contact}
+              </span>
             </div>
           </div>
         </div>
