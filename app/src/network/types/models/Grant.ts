@@ -14,6 +14,7 @@ export interface Grant {
   info: GrantForIPFS
   initialAmountUSDC: number
   publicKey: PublicKey
+  owner: PublicKey
 }
 
 export type AnchorGrant = Awaited<
@@ -24,10 +25,12 @@ export const formatGrant = (
   pubkey: PublicKey,
   account: AnchorGrant,
   grantInfo: GrantForIPFS,
+  owner: PublicKey,
 ): Grant => {
   return {
     associatedUSDCTokenAccount: account.wallet,
     publicKey: pubkey,
+    owner,
     contentSha256: account.contentSha256 as ContentSHA256,
     info: grantInfo,
     initialAmountUSDC: convertUnitsToUSDC(account.initialAmount.toNumber()),
