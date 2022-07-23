@@ -22,14 +22,13 @@ const cardContainer = css`
   }
 `
 
-const companyImage = css`
-  border-radius: 100px;
-`
-
 const companyName = css`
   font-size: 24px;
   font-weight: bold;
   line-height: 32px;
+`
+const companyImage = css`
+  border-radius: 100px;
 `
 const grantAmount = css`
   font-size: 20px;
@@ -50,14 +49,16 @@ export const GrantCard: FC<{ grant: Grant }> = ({ grant }) => {
   return (
     <Link href={urls.grant(grant.publicKey)}>
       <a className={cardContainer}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        {/* <img
-          src={grant.info.imageCID}
-          width={48}
-          alt={`${grant.company.name} logo`}
-          height={48}
-          className={companyImage}
-        /> */}
+        {grant.info.imageCID && (
+          /* eslint-disable-next-line @next/next/no-img-element */
+          <img
+            src={urls.image(grant.info.imageCID)}
+            width={48}
+            alt={`${grant.info.companyName} logo`}
+            height={48}
+            className={companyImage}
+          />
+        )}
         <Spacers.Horizontal._16px />
         <div>
           <div className={companyName}>{grant.info.companyName}</div>

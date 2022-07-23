@@ -28,4 +28,7 @@ export const urls = {
       )}&original_referer=https://ahoy.fund`
     },
   },
+
+  image: (imageIpfsCID: string) =>
+    `https://res.cloudinary.com/ahoy-labs/image/upload/h_48,w_48/bounty/${imageIpfsCID}`,
 }

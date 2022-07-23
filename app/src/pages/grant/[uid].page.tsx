@@ -12,6 +12,7 @@ import { BrandTwitterSVG } from '../../components/svgs/BrandTwitterSVG'
 import { ExternalLinkSVG } from '../../components/svgs/ExternalLinkSVG'
 import { PlusSVG } from '../../components/svgs/PlusSVG'
 import { WalletSVG } from '../../components/svgs/WalletSVG'
+import { urls } from '../../constants/urls'
 import { connection } from '../../network/connection'
 import { convertUnitsToUSDC } from '../../network/convertUSDC'
 import { fetchGrantWithSubmissions } from '../../network/fetch/fetchGrantWithSubmissions'
@@ -277,14 +278,17 @@ const GrantPage: NextPage = () => {
   return (
     <Layout>
       <div className={headlineContainer}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        {/* <img
-          className={headlineImage}
-          src={grant?.info.imageCID}
-          width={48}
-          height={48}
-          alt={`${sampleGrant.company.name} logo`}
-        /> */}
+        {imageCID && (
+          /* eslint-disable-next-line @next/next/no-img-element */
+          <img
+            className={headlineImage}
+            src={urls.image(imageCID)}
+            width={48}
+            height={48}
+            alt={`${companyName} logo`}
+          />
+        )}
+
         <Spacers.Horizontal._8px />
         <h1 className={headlineText}>
           {companyName}
@@ -305,7 +309,7 @@ const GrantPage: NextPage = () => {
         >
           <BrandTwitterSVG width={16} />
           <Spacers.Horizontal._4px />
-          <span>@{twitterSlug}</span>
+          <span>{twitterSlug}</span>
         </a>
         <Spacers.Horizontal._8px />
         <div className={verticalLine} />

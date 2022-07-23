@@ -7,7 +7,6 @@ import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { mixed, object, SchemaOf, string } from 'yup'
 
-import { Airdrop } from '../../components/Airdrop'
 import { ImageDropzone } from '../../components/ImageDropzone'
 import { Layout } from '../../components/Layout'
 import { Spacers } from '../../components/Spacers'
@@ -188,15 +187,11 @@ const validationSchema: SchemaOf<FormValues> = object().shape({
 const CreateGrantPage: NextPage = () => {
   const router = useRouter()
   const wallet = useAnchorWallet()
-  const [solBalance, usdcBalance] = useConnectedWalletBalance()
+  const { usdcBalance } = useConnectedWalletBalance()
   const [hasClickedSubmit, setHasClickedSubmit] = useState(false)
 
   return (
     <Layout>
-      <Airdrop />
-      <div>SOL: {solBalance}</div>
-      <div>USDC: {usdcBalance}</div>
-      <Spacers.Vertical._16px />
       <h1 className={heading}>Create Grant</h1>
       <Spacers.Vertical._48px />
       {wallet ? (

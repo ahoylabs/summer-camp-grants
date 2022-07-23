@@ -27,13 +27,6 @@ export const fetchGrantWithSubmissions = async ({
     ),
   )
   const ipfsGrant: GrantForIPFS = res.data
-  // TODO image
-  // if (ipfsGrant.imageCID) {
-  //   const imageRes: AxiosResponse = await axios.get(
-  //     urls.ipfs(ipfsGrant.imageCID),
-  //   )
-  //   const imageFile = imageRes.data
-  // }
   const grant = formatGrant(grantPubkey, grantAccount, ipfsGrant)
   // const submissions = await fetchAllSubmissionsForGrant({
   //   grantAccount: grantPubkey,

@@ -6,7 +6,6 @@ import { connection } from '../connection'
 import { getGrantProgram } from '../getGrantProgram'
 import { getUSDCAssociatedTokenAddress } from '../getUSDCAssociatedTokenAddress'
 import { ContentSHA256 } from '../types/ContentSHA256'
-import { formatSubmission } from '../types/models/Submission'
 import { NEXT_PUBLIC_USDC_MINT_ADDR } from './../../__generated__/_env'
 
 interface Args {
@@ -40,9 +39,5 @@ export const createSubmission = async ({
     .signers([submissionKeypair])
     .rpc()
 
-  const submissionAccount = await program.account.submission.fetch(
-    submissionKeypair.publicKey,
-  )
-
-  return formatSubmission(submissionKeypair.publicKey, submissionAccount)
+  return submissionKeypair.publicKey
 }
