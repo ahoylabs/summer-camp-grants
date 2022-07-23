@@ -1,11 +1,13 @@
 import { getAccount } from '@solana/spl-token'
 import { useAnchorWallet } from '@solana/wallet-adapter-react'
+import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
 import { PublicKey } from '@solana/web3.js'
 import { css } from 'linaria'
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
+import { AddGrantSubmission } from '../../components/AddGrantSubmission'
 import { Layout } from '../../components/Layout'
 import { Spacers } from '../../components/Spacers'
 import { BrandTwitterSVG } from '../../components/svgs/BrandTwitterSVG'
@@ -118,23 +120,30 @@ const h2Submissions = css`
 const connectWalletToSubmitContainer = css`
   background-color: ${colors.bg.gray};
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  text-align: center;
   padding: 24px;
   border: 1px solid ${colors.line.black};
   border-radius: 8px;
+
+  .wallet-adapter-button-trigger {
+    margin: auto;
+    color: ${colors.spot.green};
+    border-color: ${colors.spot.green};
+    :hover {
+      background: ${colors.spot.green};
+      color: ${colors.text.whitePrimary};
+    }
+  }
 `
 
-const connectWalletToAddSubmitButton = css`
-  display: flex;
-  align-items: center;
-  background-color: ${colors.spot.green};
-  color: ${colors.text.whitePrimary};
-  text-align: center;
+const connectWalletToAddSubmitText = css`
+  color: ${colors.spot.green};
   font-size: 20px;
   font-weight: 600;
   border-radius: 8px;
-  padding: 12px 24px;
   line-height: 1.4;
 `
 
@@ -355,14 +364,17 @@ const GrantPage: NextPage = () => {
       <Spacers.Vertical._32px />
       {wallet == null ? (
         <div className={connectWalletToSubmitContainer}>
-          <div className={connectWalletToAddSubmitButton}>
-            <PlusSVG width={24} style={{ flexShrink: 0 }} />
-            <Spacers.Horizontal._16px />
+          <div className={connectWalletToAddSubmitText}>
             Connect Wallet to Add Submission
           </div>
+          <Spacers.Vertical._16px />
+          <WalletMultiButton />
         </div>
       ) : (
-        <div>Add Submission - todo</div>
+        <AddGrantSubmission
+          publicKey={wallet.publicKey.toBase58()}
+          companyName={sampleGrant.company.name}
+        />
       )}
       <Spacers.Vertical._32px />
       {sampleSubmissionList.map((sub, i) => (

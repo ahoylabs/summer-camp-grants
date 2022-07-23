@@ -34,8 +34,6 @@ const imageContainer = css`
   border-radius: 8px;
   overflow: hidden;
   position: relative;
-  width: 48px;
-  height: 48px;
   border-radius: 100px;
 `
 
@@ -49,12 +47,13 @@ const addImageButton = css`
 
 // Adapted from the "Previews" example on https://react-dropzone.js.org/
 export const ImageDropzone: React.VFC<{
+  imageWidth: 48 | 128
   setFieldValue: (
     field: string,
     value: any,
     shouldValidate?: boolean | undefined,
   ) => void
-}> = React.memo(({ setFieldValue }) => {
+}> = React.memo(({ setFieldValue, imageWidth }) => {
   const [imagePreview, setImagePreview] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
 
@@ -100,7 +99,10 @@ export const ImageDropzone: React.VFC<{
         className={cx(dropzone, isDragActive && dragging)}
         {...getRootProps()}
       >
-        <div className={imageContainer}>
+        <div
+          className={imageContainer}
+          style={{ width: imageWidth, height: imageWidth }}
+        >
           {imagePreview && (
             <Image
               src={imagePreview}
@@ -121,11 +123,17 @@ export const ImageDropzone: React.VFC<{
             'Remove and Replace Image'
           ) : isDragActive ? (
             'Drop Here'
-          ) : (
+          ) : imageWidth === 48 ? (
             <span>
               Choose a 48px x 48px profile-picture style image for your grant.
               <Spacers.Vertical._8px />
               (twitter profile pic works well)
+              <Spacers.Vertical._8px />
+              <div className={addImageButton}>Add Image</div>
+            </span>
+          ) : (
+            <span>
+              Choose a 128px x 128px image for you submission.
               <Spacers.Vertical._8px />
               <div className={addImageButton}>Add Image</div>
             </span>

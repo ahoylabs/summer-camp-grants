@@ -82,7 +82,6 @@ const container = css`
   padding: 48px 24px;
   margin: 0 auto;
   flex-direction: column;
-  box-sizing: border-box;
 `
 
 const footer = css`
