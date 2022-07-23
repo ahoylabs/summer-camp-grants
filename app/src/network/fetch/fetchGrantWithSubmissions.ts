@@ -9,6 +9,7 @@ import { contentSha256ToIpfsCID } from '../ipfs/convertContentSha256'
 import { GrantForIPFS } from '../ipfs/types'
 import { ContentSHA256 } from '../types/ContentSHA256'
 import { formatGrant } from '../types/models/Grant'
+import { fetchAllSubmissionsForGrant } from './fetchAllSubmissionsForGrant'
 
 interface Args {
   grantPubkey: PublicKey
@@ -28,9 +29,9 @@ export const fetchGrantWithSubmissions = async ({
   )
   const ipfsGrant: GrantForIPFS = res.data
   const grant = formatGrant(grantPubkey, grantAccount, ipfsGrant)
-  // const submissions = await fetchAllSubmissionsForGrant({
-  //   grantAccount: grantPubkey,
-  //   wallet,
-  // })
-  return grant
+  const submissions = await fetchAllSubmissionsForGrant({
+    grantAccount: grantPubkey,
+    wallet,
+  })
+  return { grant, submissions }
 }
