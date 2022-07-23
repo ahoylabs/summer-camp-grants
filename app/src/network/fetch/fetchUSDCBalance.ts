@@ -12,7 +12,7 @@ export const fetchUSDCBalance = async (owner: PublicKey): Promise<number> => {
     const balanceUSDC = convertUnitsToUSDC(account.amount)
     return balanceUSDC
   } catch (error) {
-    console.warn('associated token account not found')
+    console.warn('Associated token account not found.')
     return 0
   }
 }

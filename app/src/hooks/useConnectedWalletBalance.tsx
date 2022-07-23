@@ -22,5 +22,5 @@ export const useConnectedWalletBalance = () => {
     ;(async () => await refetch())()
   }, [refetch])
 
-  return [solBalance, usdcBalance, refetch] as const
+  return { solBalance, usdcBalance, refetch }
 }

@@ -123,7 +123,7 @@ export const ImageDropzone: React.VFC<{
             'Drop Here'
           ) : (
             <span>
-              Choose a 48px x 48px profile-picture style image for you grant.
+              Choose a 48px x 48px profile-picture style image for your grant.
               <Spacers.Vertical._8px />
               (twitter profile pic works well)
               <Spacers.Vertical._8px />

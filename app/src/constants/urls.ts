@@ -15,9 +15,12 @@ export const urls = {
   privacy: 'https://ahoy.fund/privacy',
 
   api: {
-    pinJSONToIPFS: '/api/ipfs/pinJSONToIPFS',
-    pinFileToIPFS: '/api/ipfs/pinFileToIPFS',
+    pinJSONToIPFS: '/api/pinJSONToIPFS',
+    pinFileToIPFS: '/api/pinFileToIPFS',
   },
+
+  ipfs: (cid: string) => `https://ipfs.ahoy.fund/ipfs/${cid}`,
+
   socialIntent: {
     twitter: (text: string) => {
       return `https://twitter.com/intent/tweet?text=${encodeURIComponent(
@@ -25,4 +28,7 @@ export const urls = {
       )}&original_referer=https://ahoy.fund`
     },
   },
+
+  image: (imageIpfsCID: string) =>
+    `https://res.cloudinary.com/ahoy-labs/image/upload/h_48,w_48/bounty/${imageIpfsCID}`,
 }

@@ -36,4 +36,5 @@ export const paySubmitter = async ({
       walletOwner: wallet.publicKey,
       payTo: submitterAssociatedTokenAccount,
     })
+    .rpc()
 }

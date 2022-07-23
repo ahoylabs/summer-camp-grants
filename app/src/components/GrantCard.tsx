@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { FC } from 'react'
 
 import { urls } from '../constants/urls'
-import { GrantInfo } from '../pages/index.page'
+import { Grant } from '../network/types/models/Grant'
 import { colors } from '../ui/colors'
 import { Spacers } from './Spacers'
 
@@ -22,14 +22,13 @@ const cardContainer = css`
   }
 `
 
-const companyImage = css`
-  border-radius: 100px;
-`
-
 const companyName = css`
   font-size: 24px;
   font-weight: bold;
   line-height: 32px;
+`
+const companyImage = css`
+  border-radius: 100px;
 `
 const grantAmount = css`
   font-size: 20px;
@@ -46,25 +45,27 @@ const description = css`
   overflow: hidden;
 `
 
-export const GrantCard: FC<{ grant: GrantInfo }> = ({ grant }) => {
+export const GrantCard: FC<{ grant: Grant }> = ({ grant }) => {
   return (
-    <Link href={urls.grant(grant.address)}>
+    <Link href={urls.grant(grant.publicKey)}>
       <a className={cardContainer}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={grant.company.imageURL}
-          width={48}
-          alt={`${grant.company.name} logo`}
-          height={48}
-          className={companyImage}
-        />
+        {grant.info.imageCID && (
+          /* eslint-disable-next-line @next/next/no-img-element */
+          <img
+            src={urls.image(grant.info.imageCID)}
+            width={48}
+            alt={`${grant.info.companyName} logo`}
+            height={48}
+            className={companyImage}
+          />
+        )}
         <Spacers.Horizontal._16px />
         <div>
-          <div className={companyName}>{grant.company.name}</div>
+          <div className={companyName}>{grant.info.companyName}</div>
           <div className={grantAmount}>
-            ${Math.floor(grant.grantAmountUSD).toLocaleString()} USDC
+            ${Math.floor(grant.initialAmountUSDC).toLocaleString()} USDC
           </div>
-          <div className={description}>{grant.description}</div>
+          <div className={description}>{grant.info.description}</div>
         </div>
       </a>
     </Link>

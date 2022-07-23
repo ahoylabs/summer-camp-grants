@@ -1,43 +1,18 @@
+import { useAnchorWallet } from '@solana/wallet-adapter-react'
 import { css } from 'linaria'
 import type { NextPage } from 'next'
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
 
 import { GrantCard } from '../components/GrantCard'
 import { Layout } from '../components/Layout'
 import { Spacers } from '../components/Spacers'
 import { SolanaSummerSVG } from '../components/svgs/SolanaSummerSVG'
 import { urls } from '../constants/urls'
+import { fetchAllGrants } from '../network/fetch/fetchAllGrants'
+import { Grant } from '../network/types/models/Grant'
 import { colors } from '../ui/colors'
-
-export type GrantInfo = {
-  address: string
-  company: {
-    imageURL: string
-    name: string
-    twitterSlug: string
-    websiteURL: string
-  }
-  currentBalance: number
-  description: string
-  grantAmountUSD: number
-  walletPublicKey: string
-}
-
-const sampleGrant: GrantInfo = {
-  address: '1238AiBkVzWwFQtCA7TnEmh8CGTjZ87KJC5Mu3dZ456',
-  company: {
-    imageURL:
-      'https://pbs.twimg.com/profile_images/1446291295266238464/FO2fP9KO_400x400.jpg',
-    name: 'Tulip Protocol',
-    twitterSlug: 'TulipProtocol',
-    websiteURL: 'https://tulip.garden/',
-  },
-  currentBalance: 5_123.31,
-  description:
-    'We’re offering $10,000 for people to build things with Tulip Protocol. Show us what you’ve got!',
-  grantAmountUSD: 10_000.01,
-  walletPublicKey: '7cre8AiBkVzWwFQtCA7TnEmh8CGTjZ87KJC5Mu3dZxwE',
-}
+import { anchorWalletWithFallback } from '../utils/anchorWalletWithFallback'
 
 const grantsContainer = css`
   width: 100%;
@@ -94,7 +69,18 @@ const NavMenu = () => (
 )
 
 const Home: NextPage = () => {
-  const grants: GrantInfo[] = Array(15).fill(sampleGrant)
+  const wallet = useAnchorWallet()
+  const [grants, setGrants] = useState<Grant[]>([])
+
+  useEffect(() => {
+    ;(async () => {
+      const grants = await fetchAllGrants({
+        wallet: anchorWalletWithFallback(wallet),
+      })
+      setGrants(grants)
+    })()
+  }, [wallet])
+
   return (
     <Layout>
       <SolanaSummerSVG width={500} className={solanaSVGSty} />

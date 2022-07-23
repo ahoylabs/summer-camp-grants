@@ -1,6 +1,5 @@
 import { useAnchorWallet } from '@solana/wallet-adapter-react'
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
-import { createHash } from 'crypto'
 import { Field, Form, Formik, FormikHelpers } from 'formik'
 import { css } from 'linaria'
 import { NextPage } from 'next'
@@ -8,7 +7,6 @@ import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { mixed, object, SchemaOf, string } from 'yup'
 
-import { Airdrop } from '../../components/Airdrop'
 import { ImageDropzone } from '../../components/ImageDropzone'
 import { Layout } from '../../components/Layout'
 import { Spacers } from '../../components/Spacers'
@@ -17,7 +15,6 @@ import { WalletSVG } from '../../components/svgs/WalletSVG'
 import { urls } from '../../constants/urls'
 import { useConnectedWalletBalance } from '../../hooks/useConnectedWalletBalance'
 import { createGrant } from '../../network/rpc/createGrant'
-import { ContentSHA256 } from '../../network/types/ContentSHA256'
 import { colors } from '../../ui/colors'
 import { displayPublicKey } from '../../utils/displayPublicKey'
 
@@ -190,15 +187,11 @@ const validationSchema: SchemaOf<FormValues> = object().shape({
 const CreateGrantPage: NextPage = () => {
   const router = useRouter()
   const wallet = useAnchorWallet()
-  const [solBalance, usdcBalance] = useConnectedWalletBalance()
+  const { usdcBalance } = useConnectedWalletBalance()
   const [hasClickedSubmit, setHasClickedSubmit] = useState(false)
 
   return (
     <Layout>
-      <Airdrop />
-      <div>SOL: {solBalance}</div>
-      <div>USDC: {usdcBalance}</div>
-      <Spacers.Vertical._16px />
       <h1 className={heading}>Create Grant</h1>
       <Spacers.Vertical._48px />
       {wallet ? (
@@ -206,19 +199,25 @@ const CreateGrantPage: NextPage = () => {
           initialValues={initialValues}
           validationSchema={validationSchema}
           onSubmit={async (
-            { companyName }: FormValues,
+            {
+              companyName,
+              description,
+              imageFile,
+              twitter,
+              website,
+            }: FormValues,
             { setSubmitting }: FormikHelpers<FormValues>,
           ) => {
             if (!wallet) return
-            const fakeContent = [
-              ...createHash('sha256').update(companyName, 'utf8').digest(),
-            ] as ContentSHA256
-
-            const grant = await createGrant({
-              contentSha256: fakeContent,
-              wallet: wallet,
+            const grantPubkey = await createGrant({
+              imageFile,
+              companyName,
+              twitterSlug: twitter,
+              websiteURL: website,
+              description,
+              wallet,
             })
-            router.push(urls.grant(grant.publicKey))
+            router.push(urls.grant(grantPubkey))
             setSubmitting(false)
           }}
         >
