@@ -115,7 +115,7 @@ pub struct Submit<'info> {
     #[account(address = consts::USDC_MINT_ADDR)]
     pub mint: Account<'info, Mint>,
     #[account(
-        init,
+        init_if_needed,
         payer = payer,
         associated_token::mint = mint,
         associated_token::authority = pay_to_owner,

@@ -116,6 +116,30 @@ describe("ahoy-grants", () => {
     console.log("created submission:", submission);
   });
 
+  it("submit with existing ATA", async () => {
+    const existingATASubmissionKeyppair = anchor.web3.Keypair.generate();
+    const existingATASubmissionSha256 = createContentSHA(
+      "Test submission with existing ATA"
+    );
+    await program.methods
+      .submit(existingATASubmissionSha256)
+      .accounts({
+        grant: grantKeypair.publicKey,
+        mint: mintPda,
+        payTo: submitterATA,
+        payToOwner: submitter.publicKey,
+        payer: submitter.publicKey,
+        submission: existingATASubmissionKeyppair.publicKey,
+      })
+      .signers([submitter, existingATASubmissionKeyppair])
+      .rpc();
+
+    const submission = await program.account.submission.fetch(
+      existingATASubmissionKeyppair.publicKey
+    );
+    console.log("creating submission with existing ATA:", submission);
+  });
+
   it("pay submission", async () => {
     await program.methods
       .paySubmission(new anchor.BN(12_000_000))
