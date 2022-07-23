@@ -10,9 +10,9 @@ import { useEffect, useState } from 'react'
 import { AddGrantSubmission } from '../../components/AddGrantSubmission'
 import { Layout } from '../../components/Layout'
 import { Spacers } from '../../components/Spacers'
+import { SubmissionCard } from '../../components/SubmissionCard'
 import { BrandTwitterSVG } from '../../components/svgs/BrandTwitterSVG'
 import { ExternalLinkSVG } from '../../components/svgs/ExternalLinkSVG'
-import { PlusSVG } from '../../components/svgs/PlusSVG'
 import { WalletSVG } from '../../components/svgs/WalletSVG'
 import { urls } from '../../constants/urls'
 import { connection } from '../../network/connection'
@@ -148,78 +148,19 @@ const connectWalletToAddSubmitText = css`
   line-height: 1.4;
 `
 
-const singleSubmissionContainer = css`
-  padding: 32px 0;
-  border-top: 1px solid ${colors.line.black};
-  display: flex;
-  flex: 1;
-`
-const singleSubmissionImage = css`
-  border-radius: 8px;
-  width: 128px;
-  height: 128px;
-  @media only screen and (max-width: 680px) {
-    width: 80px;
-    height: 80px;
-  }
-`
-const singleSubmissionInfoContent = css`
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  flex-shrink: 1;
-  overflow-wrap: anywhere;
-  flex-grow: 1;
-`
-const singleSubmissionTitle = css`
-  text-decoration: underline;
-  overflow-wrap: anywhere;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  :hover {
-    color: ${colors.spot.green};
-  }
-`
-const singleSubmissionDescription = css`
-  line-height: 1.4;
-  flex-wrap: wrap;
-`
-const singleSubmissionSubTag = css`
-  font-size: 14px;
-  color: ${colors.text.blackSecondary};
-  padding-right: 8px;
-  display: inline-flex;
-  align-items: center;
-  line-height: 1.4;
-`
-const singleSubmissionSubmittedWallet = css`
-  font-size: 14px;
-  display: inline-flex;
-  align-items: center;
-  color: ${colors.spot.green};
-  font-weight: medium;
-  position: relative;
-  top: 2px;
-  :hover {
-    color: ${colors.hover.green};
-    text-decoration: underline;
-  }
-`
-const singleSubmissionContact = css`
-  overflow-wrap: anywhere;
-  font-size: 14px;
-  line-height: 1.4;
-`
-
-type SubmissionInfo = {
-  contact: string
-  description: string
-  githubURL: string
-  imageURL: string
-  title: string
-  walletPublicKey: string
+const sampleSubmission: SubmissionInfo = {
+  contact: 'DM me @thisisareallylongtwitternameandIcannotuinders',
+  description: 'This is a great project. I hope the team at Tulip likes it',
+  githubURL: 'https://github.com/biw/comic-sans-everything',
+  imageURL: 'https://loremflickr.com/128/128/dog',
+  title: 'Really Great Project',
+  walletPublicKey: '7cre8AiBkVzWwFQtCA7TnEmh8CGTjZ87KJC5Mu3dZxwE',
 }
+const sampleSubmissionList = [
+  sampleSubmission,
+  sampleSubmission,
+  sampleSubmission,
+]
 
 const GrantPage: NextPage = () => {
   const router = useRouter()
@@ -255,7 +196,15 @@ const GrantPage: NextPage = () => {
 
   if (!grant) return <div>'loading...'</div>
 
-  const { associatedUSDCTokenAccount, initialAmountUSDC } = grant
+  const {
+    createdAt,
+    info,
+    associatedUSDCTokenAccount,
+    initialAmountUSDC,
+    publicKey,
+  } = grant
+
+  console.log(publicKey.toBase58(), wallet?.publicKey.toBase58())
   const { companyName, description, imageCID, twitterSlug, websiteURL } =
     grant.info
 
@@ -353,56 +302,8 @@ const GrantPage: NextPage = () => {
       )}
       <Spacers.Vertical._32px />
       {submissions.map((sub, i) => (
-        <div key={i} className={singleSubmissionContainer}>
-          {sub.info.imageCID && (
-            /* eslint-disable-next-line @next/next/no-img-element */
-            <img
-              src={urls.image(sub.info.imageCID)}
-              alt={`image for ${sub.info.title}`}
-              className={singleSubmissionImage}
-            />
-          )}
-          <Spacers.Horizontal._24px />
-          <div className={singleSubmissionInfoContent}>
-            <a
-              href={sub.info.githubURL}
-              target="_blank"
-              className={singleSubmissionTitle}
-              rel="noreferrer"
-            >
-              {sub.info.title}
-              <Spacers.Horizontal._4px />
-              <ExternalLinkSVG width={16} />
-            </a>
-            <Spacers.Vertical._24px />
-            <div className={singleSubmissionDescription}>
-              {sub.info.description}
-            </div>
-            <Spacers.Vertical._24px />
-            <div>
-              <span className={singleSubmissionSubTag}>
-                Submission Account:
-              </span>
-              <a
-                href={`https://explorer.solana.com/address/${sub.publicKey.toBase58()}`}
-                target="_blank"
-                className={singleSubmissionSubmittedWallet}
-                rel="noreferrer"
-              >
-                <WalletSVG width={16} />
-                <Spacers.Horizontal._4px />
-                {displayPublicKey(sub.publicKey.toBase58())}
-              </a>
-            </div>
-            <Spacers.Vertical._4px />
-            <div>
-              <span className={singleSubmissionSubTag}>Contact:</span>
-              <span className={singleSubmissionContact}>
-                {sub.info.contact}
-              </span>
-            </div>
-          </div>
-        </div>
+        // todo: once we get this wired up we should use the timestamp
+        <SubmissionCard showPayButton submission={sub} key={i} />
       ))}
     </Layout>
   )
