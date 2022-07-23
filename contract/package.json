@@ -5,7 +5,13 @@
         "anchor": "./scripts/anchor-pinned.sh",
         "build": "./scripts/replace-solana-program-id.sh yarn anchor build",
         "test": "./scripts/replace-solana-program-id.sh yarn anchor test",
-        "deploy": "./scripts/replace-solana-program-id.sh yarn anchor deploy"
+        "deploy": "yarn __deploy --provider.cluster http://127.0.0.1:8899",
+        "deploy-faucet": "solana program deploy -u localhost --program-id spl_token_faucet-keypair.json spl_token_faucet.so",
+        "init-faucet": "yarn anchor run --provider.cluster http://127.0.0.1:8899 init_faucet",
+        "deploy-all": "yarn deploy-faucet && yarn init-faucet && yarn deploy",
+        "devnet:deploy":  "yarn __deploy --provider.cluster devnet",
+        "mainnet:deploy":  "yarn __deploy --provider.cluster mainnet",
+        "__deploy": "./scripts/replace-solana-program-id.sh yarn anchor deploy"
     },
     "dependencies": {
         "@project-serum/anchor": "^0.24.2",
