@@ -37,7 +37,6 @@ eslint-disable no-unused-vars
  * The goal is to move these changes upstream into Anchor so everyone can enjoy
  * them, but until that happens, we type cast our program as a `TypedProgram`
  *
- * See `./getProgram.ts` for usage
  */
 
 type ExtractNamedFields<T extends { name: string }> = {

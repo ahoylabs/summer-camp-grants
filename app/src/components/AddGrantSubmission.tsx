@@ -3,11 +3,10 @@ import { PublicKey } from '@solana/web3.js'
 import { Field, Form, Formik, FormikHelpers } from 'formik'
 import { css, cx } from 'linaria'
 import { useRouter } from 'next/router'
-import { useSnackbar } from 'notistack'
 import { FC, useState } from 'react'
+import toast from 'react-hot-toast'
 import { mixed, object, SchemaOf, string } from 'yup'
 
-import { urls } from '../constants/urls'
 import { createSubmission } from '../network/rpc/createSubmission'
 import { colors } from '../ui/colors'
 import { displayPublicKey } from '../utils/displayPublicKey'
@@ -160,7 +159,6 @@ export const AddGrantSubmission: FC<{
 }> = ({ companyName, publicKey, grantPubkey }) => {
   const wallet = useAnchorWallet()
   const router = useRouter()
-  const { enqueueSnackbar } = useSnackbar()
   const [hasClickedSubmit, setHasClickedSubmit] = useState(false)
   const [showForm, setShowForm] = useState(false)
 
@@ -172,7 +170,7 @@ export const AddGrantSubmission: FC<{
       <div className={heading}>
         <PlusSVG width={24} style={{ flexShrink: 0 }} />
         <Spacers.Horizontal._4px />
-        Add Submission
+        Submit Grant Application
       </div>
       {showForm && (
         <button className={collapseButton} onClick={() => setShowForm(false)}>
@@ -197,15 +195,11 @@ export const AddGrantSubmission: FC<{
               wallet,
               grantAccount: grantPubkey,
             })
-            enqueueSnackbar('Successfully submitted grant application.', {
-              variant: 'success',
-            })
+            toast.success('submission created! Reloading...')
             router.reload()
-          } catch (error: any) {
+          } catch (error) {
+            toast.error(`error: ${error}`)
             console.error(error)
-            enqueueSnackbar(error.message, {
-              variant: 'error',
-            })
           } finally {
             setSubmitting(false)
           }

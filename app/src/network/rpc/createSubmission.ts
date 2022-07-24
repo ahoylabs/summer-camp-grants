@@ -9,13 +9,13 @@ import { pinSubmissionToIPFS } from '../ipfs/pinToIPFS'
 import { NEXT_PUBLIC_USDC_MINT_ADDR } from './../../__generated__/_env'
 
 interface Args {
-  grantAccount: PublicKey
-  wallet: AnchorWallet
   contact: string
   description: string
   githubURL: string
+  grantAccount: PublicKey
   imageFile: File | null
   title: string
+  wallet: AnchorWallet
 }
 
 export const createSubmission = async ({

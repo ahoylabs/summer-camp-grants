@@ -4,8 +4,8 @@ import { Field, Form, Formik, FormikHelpers } from 'formik'
 import { css } from 'linaria'
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
-import { useSnackbar } from 'notistack'
 import { useState } from 'react'
+import toast from 'react-hot-toast'
 import { mixed, object, SchemaOf, string } from 'yup'
 
 import { ImageDropzone } from '../../components/ImageDropzone'
@@ -189,7 +189,6 @@ const CreateGrantPage: NextPage = () => {
   const router = useRouter()
   const wallet = useAnchorWallet()
   const { usdcBalance } = useConnectedWalletBalance()
-  const { enqueueSnackbar } = useSnackbar()
   const [hasClickedSubmit, setHasClickedSubmit] = useState(false)
 
   return (
@@ -220,15 +219,11 @@ const CreateGrantPage: NextPage = () => {
                 description,
                 wallet,
               })
-              enqueueSnackbar('Successfully created grant.', {
-                variant: 'success',
-              })
+              toast.success('grant successfully created - redirecting')
               router.push(urls.grant(grantPubkey))
-            } catch (error: any) {
-              console.error(error)
-              enqueueSnackbar(error.message, {
-                variant: 'error',
-              })
+              setSubmitting(false)
+            } catch (err) {
+              toast.error(`error: ${err}`)
             } finally {
               setSubmitting(false)
             }

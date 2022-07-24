@@ -1,8 +1,9 @@
 import { css } from 'linaria'
+import Link from 'next/link'
 import { FC } from 'react'
+
 import { urls } from '../constants/urls'
 import { Submission } from '../network/types/models/Submission'
-
 import { colors } from '../ui/colors'
 import { displayPublicKey } from '../utils/displayPublicKey'
 import { Spacers } from './Spacers'
@@ -89,10 +90,18 @@ const payProjectButton = css`
 `
 
 export const SubmissionCard: FC<{
+  grantUID: string
   showPayButton: boolean
   submission: Submission
-}> = ({ submission, showPayButton }) => (
+}> = ({ grantUID, showPayButton, submission }) => (
   <div className={singleSubmissionContainer}>
+    {showPayButton && (
+      <Link
+        href={urls.paySubmission(grantUID, submission.publicKey.toBase58())}
+      >
+        <a className={payProjectButton}>Pay Project</a>
+      </Link>
+    )}
     {submission.info.imageCID && (
       /* eslint-disable-next-line @next/next/no-img-element */
       <img
