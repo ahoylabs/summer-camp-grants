@@ -170,7 +170,7 @@ export const AddGrantSubmission: FC<{
       <div className={heading}>
         <PlusSVG width={24} style={{ flexShrink: 0 }} />
         <Spacers.Horizontal._4px />
-        Add Submission
+        Submit Grant Application
       </div>
       {showForm && (
         <button className={collapseButton} onClick={() => setShowForm(false)}>
