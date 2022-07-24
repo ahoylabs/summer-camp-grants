@@ -5,6 +5,8 @@ export const urls = {
   grant: (pubKey: PublicKey | string) =>
     `/grant/${typeof pubKey === 'string' ? pubKey : pubKey.toBase58()}`,
   createGrant: '/grant/create',
+  paySubmission: (grantUID: string, submissionID: string) =>
+    `/grant/${grantUID}/${submissionID}`,
 
   external: {
     twitter: 'https://twitter.com/intent/follow?screen_name=ahoy_labs',

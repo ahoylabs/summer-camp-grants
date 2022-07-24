@@ -1,28 +1,19 @@
-import { getAccount } from '@solana/spl-token'
 import { useAnchorWallet } from '@solana/wallet-adapter-react'
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
-import { PublicKey } from '@solana/web3.js'
 import { css } from 'linaria'
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
 
 import { AddGrantSubmission } from '../../components/AddGrantSubmission'
+import { CurrentWalletBalanceCard } from '../../components/CurrentWalletBalanceCard'
 import { Layout } from '../../components/Layout'
 import { Spacers } from '../../components/Spacers'
 import { SubmissionCard } from '../../components/SubmissionCard'
 import { BrandTwitterSVG } from '../../components/svgs/BrandTwitterSVG'
 import { ExternalLinkSVG } from '../../components/svgs/ExternalLinkSVG'
-import { WalletSVG } from '../../components/svgs/WalletSVG'
 import { urls } from '../../constants/urls'
-import { connection } from '../../network/connection'
-import { convertUnitsToUSDC } from '../../network/convertUSDC'
-import { fetchGrantWithSubmissions } from '../../network/fetch/fetchGrantWithSubmissions'
-import { Grant } from '../../network/types/models/Grant'
-import { Submission } from '../../network/types/models/Submission'
+import { useGrantWithSubmissions } from '../../hooks/useGrantWithSubmissions'
 import { colors } from '../../ui/colors'
-import { anchorWalletWithFallback } from '../../utils/anchorWalletWithFallback'
-import { displayPublicKey } from '../../utils/displayPublicKey'
 
 const headlineContainer = css`
   display: flex;
@@ -72,47 +63,6 @@ const descriptionText = css`
   line-height: 1.4;
 `
 
-const walletContainer = css`
-  display: flex;
-  background-color: ${colors.bg.green};
-  border: 1px solid ${colors.line.black};
-  padding: 16px;
-  align-items: center;
-  justify-content: space-between;
-  border-radius: 8px;
-`
-const leftSideWalletContainer = css`
-  display: flex;
-  flex-direction: column;
-`
-
-const leftSideWalletContainerBalance = css`
-  display: flex;
-  align-items: center;
-  font-weight: bold;
-  color: ${colors.spot.green};
-  line-height: 1.4;
-`
-const leftSideWalletContainerAddress = css`
-  color: ${colors.text.blackSecondary};
-  font-weight: medium;
-  font-size: 14px;
-`
-
-const viewOnSolanaExplorerButton = css`
-  display: flex;
-  color: ${colors.spot.green};
-  border: 1.5px solid ${colors.spot.green};
-  border-radius: 8px;
-  padding: 10px 16px;
-  font-weight: 500;
-  text-align: center;
-  :hover {
-    background-color: ${colors.spot.green};
-    color: ${colors.text.whitePrimary};
-  }
-`
-
 const h2Submissions = css`
   font-size: 24px;
   font-weight: bold;
@@ -151,45 +101,18 @@ const connectWalletToAddSubmitText = css`
 const GrantPage: NextPage = () => {
   const router = useRouter()
   const wallet = useAnchorWallet()
+  const { uid } = router.query as { uid: string }
+  const [grant, submissions, usdcBalance, loading] = useGrantWithSubmissions(
+    uid,
+    wallet,
+  )
 
-  const [grant, setGrant] = useState<Grant | null>(null)
-  const [usdcBalance, setUsdcBalance] = useState(0)
-  const [submissions, setSubmissions] = useState<Submission[]>([])
-
-  const { uid } = router.query
-
-  useEffect(() => {
-    ;(async () => {
-      if (!uid) return
-      const isValidPubkey = PublicKey.isOnCurve(uid as string)
-      if (!isValidPubkey) {
-        console.warn('Not a valid grant account.')
-        // TODO add error handling for 404 and invalid pubkey
-      }
-
-      // TODO error handling for if the grant is not found
-      const { grant, submissions } = await fetchGrantWithSubmissions({
-        grantPubkey: new PublicKey(uid as string),
-        wallet: anchorWalletWithFallback(wallet),
-      })
-      setGrant(grant)
-      setSubmissions(submissions)
-
-      try {
-        const account = await getAccount(
-          connection,
-          grant.associatedUSDCTokenAccount,
-        )
-        const balanceUSDC = convertUnitsToUSDC(account.amount)
-        setUsdcBalance(balanceUSDC)
-      } catch (error) {
-        // there's a chance the ATA could have been destroyed
-        setUsdcBalance(0)
-      }
-    })()
-  }, [uid, wallet])
-
-  if (!grant) return <div>'loading...'</div>
+  if (loading) {
+    return <Layout>loading...</Layout>
+  }
+  if (!grant) {
+    return <Layout>404: Grant Not Found</Layout>
+  }
 
   const {
     info: { companyName, description, imageCID, twitterSlug, websiteURL },
@@ -251,28 +174,10 @@ const GrantPage: NextPage = () => {
       <Spacers.Vertical._32px />
       <div className={descriptionText}>{description}</div>
       <Spacers.Vertical._32px />
-      <div className={walletContainer}>
-        <div className={leftSideWalletContainer}>
-          <div className={leftSideWalletContainerBalance}>
-            <WalletSVG width={24} />
-            <Spacers.Horizontal._4px />$
-            {Math.floor(usdcBalance).toLocaleString()} USDC
-          </div>
-          <Spacers.Vertical._4px />
-          <div className={leftSideWalletContainerAddress}>
-            {displayPublicKey(associatedUSDCTokenAccount)}
-          </div>
-        </div>
-        <a
-          href={`https://explorer.solana.com/address/${associatedUSDCTokenAccount}`}
-          target="_blank"
-          className={viewOnSolanaExplorerButton}
-          rel="noreferrer"
-        >
-          View on Solana Explorer <Spacers.Horizontal._4px />
-          <ExternalLinkSVG style={{ flexShrink: 0 }} width={16} />
-        </a>
-      </div>
+      <CurrentWalletBalanceCard
+        usdcBalance={usdcBalance}
+        associatedUSDCTokenAccount={associatedUSDCTokenAccount}
+      />
       <Spacers.Vertical._72px />
       <h2 className={h2Submissions}>Submissions</h2>
       <Spacers.Vertical._32px />
@@ -295,7 +200,14 @@ const GrantPage: NextPage = () => {
       {submissions
         .sort((a, b) => b.submittedAt.diff(a.submittedAt))
         .map((sub, i) => (
-          <SubmissionCard showPayButton submission={sub} key={i} />
+          <SubmissionCard
+            grantUID={publicKey.toBase58()}
+            showPayButton={
+              wallet?.publicKey?.toBase58() === grant.owner.toBase58()
+            }
+            submission={sub}
+            key={i}
+          />
         ))}
     </Layout>
   )

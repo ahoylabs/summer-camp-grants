@@ -189,10 +189,6 @@ export const Layout: FC<{ children: React.ReactNode }> = ({ children }) => (
           <Spacers.Vertical._24px />
         </div>
         <div className={legalContainer}>
-          <a target="_blank" href={urls.terms} rel="noreferrer">
-            Terms of Use
-          </a>
-          <Spacers.Horizontal._24px />
           <div className={onlyMobile}>
             <Spacers.Vertical._24px />
           </div>

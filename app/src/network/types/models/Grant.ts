@@ -13,8 +13,8 @@ export interface Grant {
   createdAt: Dayjs
   info: GrantForIPFS
   initialAmountUSDC: number
-  publicKey: PublicKey
   owner: PublicKey
+  publicKey: PublicKey
 }
 
 export type AnchorGrant = Awaited<

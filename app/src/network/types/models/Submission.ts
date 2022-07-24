@@ -6,7 +6,7 @@ import { SubmissionForIPFS } from '../../ipfs/types'
 import { TypedProgram } from '../typedProgram'
 import { AhoyGrants } from './../../../__generated__/ahoy_grants'
 
-export interface Submission {
+export type Submission = {
   amountWon: Decimal
   grant: PublicKey
   info: SubmissionForIPFS
@@ -25,8 +25,6 @@ export const formatSubmission = (
   account: AnchorSubmission,
   submissionInfo: SubmissionForIPFS,
 ): Submission => {
-  console.log(account)
-
   return {
     amountWon: new Decimal(account.amountWon.toString()),
     grant: account.grant,

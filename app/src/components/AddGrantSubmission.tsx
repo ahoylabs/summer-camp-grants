@@ -4,10 +4,10 @@ import { Field, Form, Formik, FormikHelpers } from 'formik'
 import { css, cx } from 'linaria'
 import { useRouter } from 'next/router'
 import { FC, useState } from 'react'
+import toast from 'react-hot-toast'
 import { mixed, object, SchemaOf, string } from 'yup'
-import { urls } from '../constants/urls'
-import { createSubmission } from '../network/rpc/createSubmission'
 
+import { createSubmission } from '../network/rpc/createSubmission'
 import { colors } from '../ui/colors'
 import { displayPublicKey } from '../utils/displayPublicKey'
 import { ImageDropzone } from './ImageDropzone'
@@ -196,10 +196,10 @@ export const AddGrantSubmission: FC<{
               grantAccount: grantPubkey,
             })
 
-            // TODO add a snackbar notification or something
-
+            toast.success('submission created! Reloading...')
             router.reload()
           } catch (error) {
+            toast.error(`error: ${error}`)
             console.error(error)
           } finally {
             setSubmitting(false)
@@ -266,7 +266,7 @@ export const AddGrantSubmission: FC<{
               <label htmlFor="imageFile">Image</label>
               <ImageDropzone imageWidth={128} setFieldValue={setFieldValue} />
               <Spacers.Vertical._48px />
-              {hasClickedSubmit && errorMessage.length && (
+              {hasClickedSubmit && errorMessage.length ? (
                 <>
                   <div className={errorList}>
                     <span>Errors:</span>
@@ -278,7 +278,7 @@ export const AddGrantSubmission: FC<{
                   </div>
                   <Spacers.Vertical._24px />
                 </>
-              )}
+              ) : null}
               <button
                 onClick={() => setHasClickedSubmit(true)}
                 className={submitButton}

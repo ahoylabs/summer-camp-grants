@@ -5,6 +5,7 @@ import { css } from 'linaria'
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
+import toast from 'react-hot-toast'
 import { mixed, object, SchemaOf, string } from 'yup'
 
 import { ImageDropzone } from '../../components/ImageDropzone'
@@ -209,16 +210,23 @@ const CreateGrantPage: NextPage = () => {
             { setSubmitting }: FormikHelpers<FormValues>,
           ) => {
             if (!wallet) return
-            const grantPubkey = await createGrant({
-              imageFile,
-              companyName,
-              twitterSlug: twitter,
-              websiteURL: website,
-              description,
-              wallet,
-            })
-            router.push(urls.grant(grantPubkey))
-            setSubmitting(false)
+            try {
+              const grantPubkey = await createGrant({
+                imageFile,
+                companyName,
+                twitterSlug: twitter,
+                websiteURL: website,
+                description,
+                wallet,
+              })
+              toast.success('grant successfully created - redirecting')
+              router.push(urls.grant(grantPubkey))
+              setSubmitting(false)
+            } catch (err) {
+              toast.error(`error: ${err}`)
+            } finally {
+              setSubmitting(false)
+            }
           }}
         >
           {({ setFieldValue, isSubmitting, errors, dirty }) => {
