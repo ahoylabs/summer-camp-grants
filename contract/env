@@ -1,5 +1,5 @@
 export ANCHOR_VERSION=0.24.2
-export GRANT_PROGRAM_ID=Go23RCzTBG3dBfeuuAy4mcoQY4srmd9whxJcHsr2jZ6C
+export GRANT_PROGRAM_ID=HqyLxiVTCmsGvQSAddwFMDBimV5nszGBpZSzeJWj3nZ
 
 # Actual USDC address for use on mainnet: EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v
 
