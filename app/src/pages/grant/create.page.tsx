@@ -219,7 +219,7 @@ const CreateGrantPage: NextPage = () => {
                 description,
                 wallet,
               })
-              toast.success('grant successfully created - redirecting')
+              toast.success('Grant created! Redirecting...')
               router.push(urls.grant(grantPubkey))
               setSubmitting(false)
             } catch (err) {
@@ -324,19 +324,18 @@ const CreateGrantPage: NextPage = () => {
       ) : (
         <div className={noWalletCallout}>
           <p>
-            <span>To get started, connect a wallet</span> with the associate
-            USDC account that you will pay your grant with.
+            <span>To get started, connect a wallet</span> containing the USDC
+            account that holds the funds to your grant.
           </p>
           <Spacers.Vertical._16px />
           <p>
-            This Wallet will be the wallet shown publicly and where funds will
-            be paid from to Hackathon teams.
+            This Wallet will be displayed publicly as the source of funds to be
+            paid to teams that apply to your grant.
           </p>
           <Spacers.Vertical._16px />
           <p className="snapshot-callout">
-            Make sure that the USDC funds are in the wallet before creating the
-            grant as we display the total amount of the grant based on the
-            balance at time of creation
+            We display the total amount of the grant based on the USDC balance
+            at time of creation.
           </p>
           <Spacers.Vertical._24px />
           <WalletMultiButton />

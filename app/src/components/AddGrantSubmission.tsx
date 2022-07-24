@@ -196,7 +196,7 @@ export const AddGrantSubmission: FC<{
               grantAccount: grantPubkey,
             })
 
-            toast.success('submission created! Reloading...')
+            toast.success('Submission created! Reloading...')
             router.reload()
           } catch (error) {
             toast.error(`error: ${error}`)
