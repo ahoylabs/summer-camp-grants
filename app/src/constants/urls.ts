@@ -31,6 +31,6 @@ export const urls = {
     },
   },
 
-  image: (imageIpfsCID: string) =>
-    `https://res.cloudinary.com/ahoy-labs/image/upload/h_48,w_48/bounty/${imageIpfsCID}`,
+  image: (imageIpfsCID: string, width: number) =>
+    `https://res.cloudinary.com/ahoy-labs/image/upload/h_${width},w_${width}/bounty/${imageIpfsCID}`,
 }

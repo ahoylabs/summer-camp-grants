@@ -52,7 +52,7 @@ export const GrantCard: FC<{ grant: Grant }> = ({ grant }) => {
         {grant.info.imageCID && (
           /* eslint-disable-next-line @next/next/no-img-element */
           <img
-            src={urls.image(grant.info.imageCID)}
+            src={urls.image(grant.info.imageCID, 48)}
             width={48}
             alt={`${grant.info.companyName} logo`}
             height={48}

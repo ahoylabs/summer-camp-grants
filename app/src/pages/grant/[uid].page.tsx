@@ -128,7 +128,7 @@ const GrantPage: NextPage = () => {
           /* eslint-disable-next-line @next/next/no-img-element */
           <img
             className={headlineImage}
-            src={urls.image(imageCID)}
+            src={urls.image(imageCID, 48)}
             width={48}
             height={48}
             alt={`${companyName} logo`}

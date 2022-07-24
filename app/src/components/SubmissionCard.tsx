@@ -105,7 +105,7 @@ export const SubmissionCard: FC<{
     {submission.info.imageCID && (
       /* eslint-disable-next-line @next/next/no-img-element */
       <img
-        src={urls.image(submission.info.imageCID)}
+        src={urls.image(submission.info.imageCID, 128)}
         alt={`image for ${submission.info.title}`}
         className={singleSubmissionImage}
       />

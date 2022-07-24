@@ -220,7 +220,9 @@ export const AddGrantSubmission: FC<{
                 <div>
                   If your submission is accepted, funds will be sent to the{' '}
                   <b>USDC associated token account</b> owned by the Solana
-                  wallet address you are logged in with right now.
+                  wallet address you are logged in with right now. If your
+                  wallet does not have an associated USDC account, one will be
+                  created for you.
                 </div>
                 <Spacers.Vertical._8px />
                 <div className="secondLine">
