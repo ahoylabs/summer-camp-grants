@@ -189,7 +189,7 @@ const GrantPage: NextPage = () => {
     })()
   }, [uid, wallet])
 
-  if (!grant) return <div>'loading...'</div>
+  if (!grant) return null
 
   const {
     info: { companyName, description, imageCID, twitterSlug, websiteURL },

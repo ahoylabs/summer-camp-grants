@@ -3,11 +3,12 @@ import { PublicKey } from '@solana/web3.js'
 import { Field, Form, Formik, FormikHelpers } from 'formik'
 import { css, cx } from 'linaria'
 import { useRouter } from 'next/router'
+import { useSnackbar } from 'notistack'
 import { FC, useState } from 'react'
 import { mixed, object, SchemaOf, string } from 'yup'
+
 import { urls } from '../constants/urls'
 import { createSubmission } from '../network/rpc/createSubmission'
-
 import { colors } from '../ui/colors'
 import { displayPublicKey } from '../utils/displayPublicKey'
 import { ImageDropzone } from './ImageDropzone'
@@ -159,6 +160,7 @@ export const AddGrantSubmission: FC<{
 }> = ({ companyName, publicKey, grantPubkey }) => {
   const wallet = useAnchorWallet()
   const router = useRouter()
+  const { enqueueSnackbar } = useSnackbar()
   const [hasClickedSubmit, setHasClickedSubmit] = useState(false)
   const [showForm, setShowForm] = useState(false)
 
@@ -195,12 +197,15 @@ export const AddGrantSubmission: FC<{
               wallet,
               grantAccount: grantPubkey,
             })
-
-            // TODO add a snackbar notification or something
-
+            enqueueSnackbar('Successfully submitted grant application.', {
+              variant: 'success',
+            })
             router.reload()
-          } catch (error) {
+          } catch (error: any) {
             console.error(error)
+            enqueueSnackbar(error.message, {
+              variant: 'error',
+            })
           } finally {
             setSubmitting(false)
           }
@@ -266,7 +271,7 @@ export const AddGrantSubmission: FC<{
               <label htmlFor="imageFile">Image</label>
               <ImageDropzone imageWidth={128} setFieldValue={setFieldValue} />
               <Spacers.Vertical._48px />
-              {hasClickedSubmit && errorMessage.length && (
+              {hasClickedSubmit && errorMessage.length ? (
                 <>
                   <div className={errorList}>
                     <span>Errors:</span>
@@ -278,7 +283,7 @@ export const AddGrantSubmission: FC<{
                   </div>
                   <Spacers.Vertical._24px />
                 </>
-              )}
+              ) : null}
               <button
                 onClick={() => setHasClickedSubmit(true)}
                 className={submitButton}
