@@ -8,7 +8,7 @@ Each Grant contains:
 - public key of the USDC token account holding the grant funds 
 - CID (content identifier) of an IPFS file containing company information, description, and other metadata
 
-On creation, the Grant creator proves control of the USDC account specified. **They still maintain unilateral control of how / when / to-whom the funds are distributed, if at all, to winnng submissions.** 
+On creation, the Grant creator proves control of the USDC account specified. **The creator maintains unilateral control of how / when / to-whom the funds are awarded.** 
 
 ### Submission Account
 
