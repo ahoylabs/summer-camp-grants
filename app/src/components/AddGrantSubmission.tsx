@@ -160,6 +160,7 @@ export const AddGrantSubmission: FC<{
   const wallet = useAnchorWallet()
   const router = useRouter()
   const [hasClickedSubmit, setHasClickedSubmit] = useState(false)
+  const [submitError, setSubmitError] = useState<any>(null)
   const [showForm, setShowForm] = useState(false)
 
   return (
@@ -200,6 +201,7 @@ export const AddGrantSubmission: FC<{
             router.reload()
           } catch (error) {
             toast.error(`error: ${error}`)
+            setSubmitError(`${error}`)
             console.error(error)
           } finally {
             setSubmitting(false)
@@ -276,6 +278,7 @@ export const AddGrantSubmission: FC<{
                       {errorMessage.map((i) => (
                         <li key={i}>{i}</li>
                       ))}
+                      {submitError ? <li>{submitError}</li> : null}
                     </ul>
                   </div>
                   <Spacers.Vertical._24px />

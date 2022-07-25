@@ -5,6 +5,7 @@ import { FC } from 'react'
 
 import { urls } from '../constants/urls'
 import { colors } from '../ui/colors'
+import { PageHead } from './PageHead'
 import { Spacers } from './Spacers'
 import { AhoyLogoSVG } from './svgs/AhoyLogoSVG'
 import { BrandTwitterSVG } from './svgs/BrandTwitterSVG'
@@ -141,72 +142,75 @@ const onlyMobile = css`
 `
 
 export const Layout: FC<{ children: React.ReactNode }> = ({ children }) => (
-  <div className={pageWrap}>
-    <div className={header}>
-      <div className={headerContent}>
-        <Link href={urls.home}>
-          <a className={sideHeader}>
-            <SolanaLogoSVG width={24} />
-            <Spacers.Horizontal._8px />
-            <div className={summerCampText}>#SolanaSummerCamp</div>
-            <Spacers.Horizontal._16px />
-            <div className={grantsText}>Grants</div>
-          </a>
-        </Link>
-        <div className={sideHeader}>
+  <>
+    <PageHead />
+    <div className={pageWrap}>
+      <div className={header}>
+        <div className={headerContent}>
+          <Link href={urls.home}>
+            <a className={sideHeader}>
+              <SolanaLogoSVG width={24} />
+              <Spacers.Horizontal._8px />
+              <div className={summerCampText}>#SolanaSummerCamp</div>
+              <Spacers.Horizontal._16px />
+              <div className={grantsText}>Grants</div>
+            </a>
+          </Link>
+          <div className={sideHeader}>
+            <a
+              href="https://ahoy.fund?solana_summer=true"
+              target="_blank"
+              className={poweredByContainer}
+              rel="noreferrer"
+            >
+              <div className={poweredByText}>Powered by</div>
+              <Spacers.Horizontal._8px />
+              <AhoyLogoSVG width={50} />
+            </a>
+            <WalletMultiButton />
+          </div>
+        </div>
+      </div>
+      <div style={{ height: 64 }} />
+      <div className={container}>{children}</div>
+      <div className={footer}>
+        <div className={footerContent}>
+          <div className={onlyMobile}>
+            <Spacers.Vertical._24px />
+          </div>
           <a
-            href="https://ahoy.fund?solana_summer=true"
+            className={followOnTwitter}
+            href={urls.external.twitter}
             target="_blank"
-            className={poweredByContainer}
             rel="noreferrer"
           >
-            <div className={poweredByText}>Powered by</div>
+            <BrandTwitterSVG width={16} />
             <Spacers.Horizontal._8px />
-            <AhoyLogoSVG width={50} />
+            Follow Ahoy on Twitter
           </a>
-          <WalletMultiButton />
-        </div>
-      </div>
-    </div>
-    <div style={{ height: 64 }} />
-    <div className={container}>{children}</div>
-    <div className={footer}>
-      <div className={footerContent}>
-        <div className={onlyMobile}>
-          <Spacers.Vertical._24px />
-        </div>
-        <a
-          className={followOnTwitter}
-          href={urls.external.twitter}
-          target="_blank"
-          rel="noreferrer"
-        >
-          <BrandTwitterSVG width={16} />
-          <Spacers.Horizontal._8px />
-          Follow Ahoy on Twitter
-        </a>
-        <div className={onlyMobile}>
-          <Spacers.Vertical._24px />
-        </div>
-        <div className={legalContainer}>
           <div className={onlyMobile}>
             <Spacers.Vertical._24px />
           </div>
-          <a target="_blank" href={urls.privacy} rel="noreferrer">
-            Privacy Policy
-          </a>
-          <Spacers.Horizontal._24px />
-          <div className={onlyMobile}>
-            <Spacers.Vertical._24px />
-          </div>
-          <a target="_blank" href="https://ahoy.fund" rel="noreferrer">
-            © 2022 Ahoy Labs, Inc.
-          </a>
-          <div className={onlyMobile}>
-            <Spacers.Vertical._24px />
+          <div className={legalContainer}>
+            <div className={onlyMobile}>
+              <Spacers.Vertical._24px />
+            </div>
+            <a target="_blank" href={urls.privacy} rel="noreferrer">
+              Privacy Policy
+            </a>
+            <Spacers.Horizontal._24px />
+            <div className={onlyMobile}>
+              <Spacers.Vertical._24px />
+            </div>
+            <a target="_blank" href="https://ahoy.fund" rel="noreferrer">
+              © 2022 Ahoy Labs, Inc.
+            </a>
+            <div className={onlyMobile}>
+              <Spacers.Vertical._24px />
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  </>
 )

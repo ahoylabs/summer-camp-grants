@@ -190,6 +190,7 @@ const CreateGrantPage: NextPage = () => {
   const wallet = useAnchorWallet()
   const { usdcBalance } = useConnectedWalletBalance()
   const [hasClickedSubmit, setHasClickedSubmit] = useState(false)
+  const [submitError, setSubmitError] = useState<any>(null)
 
   return (
     <Layout>
@@ -223,6 +224,7 @@ const CreateGrantPage: NextPage = () => {
               router.push(urls.grant(grantPubkey))
               setSubmitting(false)
             } catch (err) {
+              setSubmitError(`${err}`)
               toast.error(`error: ${err}`)
             } finally {
               setSubmitting(false)
@@ -296,7 +298,7 @@ const CreateGrantPage: NextPage = () => {
                 <label htmlFor="imageFile">Image</label>
                 <ImageDropzone imageWidth={48} setFieldValue={setFieldValue} />
                 <Spacers.Vertical._48px />
-                {hasClickedSubmit && errorMessage.length ? (
+                {hasClickedSubmit && (errorMessage.length || submitError) ? (
                   <>
                     <div className={errorList}>
                       <span>Errors:</span>
@@ -304,6 +306,7 @@ const CreateGrantPage: NextPage = () => {
                         {errorMessage.map((i) => (
                           <li key={i}>{i}</li>
                         ))}
+                        {submitError ? <li>{submitError}</li> : null}
                       </ul>
                     </div>
                     <Spacers.Vertical._24px />

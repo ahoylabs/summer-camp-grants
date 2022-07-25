@@ -9,7 +9,7 @@ export const compressImage = async (
     new Compressor(imageFile, {
       width,
       height,
-      quality: 0.9, // 1 makes the image larger
+      quality: 1,
       resize: 'cover',
       success(file) {
         resolve(file as File) // we always pass in a file, so the output will be a file

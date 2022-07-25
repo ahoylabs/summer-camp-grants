@@ -116,6 +116,7 @@ const PaySubmissionPage: NextPage = () => {
   const router = useRouter()
   const wallet = useAnchorWallet()
   const [hasClickedSubmit, setHasClickedSubmit] = useState(false)
+  const [submitError, setSubmitError] = useState<any>(null)
   const { uid, submissionID } = router.query as {
     submissionID: string
     uid: string
@@ -197,6 +198,7 @@ const PaySubmissionPage: NextPage = () => {
             router.push(urls.grant(uid))
           } catch (error) {
             toast.error(`error: ${error}`)
+            setSubmitError(`${error}`)
             console.error(error)
           } finally {
             setSubmitting(false)
@@ -228,6 +230,7 @@ const PaySubmissionPage: NextPage = () => {
                       {errorMessage.map((i) => (
                         <li key={i}>{i}</li>
                       ))}
+                      {submitError ? <li>{submitError}</li> : null}
                     </ul>
                   </div>
                   <Spacers.Vertical._24px />
