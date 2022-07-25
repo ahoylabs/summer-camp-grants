@@ -290,7 +290,7 @@ export const AddGrantSubmission: FC<{
                 disabled={!dirty || isSubmitting}
                 type="submit"
               >
-                Create Grant
+                Submit
               </button>
             </Form>
           )

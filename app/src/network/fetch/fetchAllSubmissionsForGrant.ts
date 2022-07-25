@@ -21,9 +21,16 @@ export const fetchAllSubmissionsForGrant = async ({
   wallet,
 }: Args): Promise<Submission[]> => {
   const program = getGrantProgram(wallet, connection)
-  const rawSubmissions = await program.account.submission.all(
-    grantAccount.toBuffer(),
-  )
+
+  const rawSubmissions = await program.account.submission.all([
+    {
+      memcmp: {
+        offset: 8,
+        bytes: grantAccount.toBase58(),
+      },
+    },
+  ])
+
   const submissions: Submission[] = []
   for (const s of rawSubmissions) {
     // definitely not ideal to be firing off this many network calls,
@@ -40,5 +47,6 @@ export const fetchAllSubmissionsForGrant = async ({
     )
     submissions.push(grant)
   }
+
   return submissions
 }
