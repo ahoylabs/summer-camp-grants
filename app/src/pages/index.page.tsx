@@ -1,12 +1,14 @@
 import { useAnchorWallet } from '@solana/wallet-adapter-react'
 import { css } from 'linaria'
 import type { NextPage } from 'next'
+import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
 import { GrantCard } from '../components/GrantCard'
 import { Layout } from '../components/Layout'
 import { Spacers } from '../components/Spacers'
 import { SolanaSummerSVG } from '../components/svgs/SolanaSummerSVG'
+import { urls } from '../constants/urls'
 import { fetchAllGrants } from '../network/fetch/fetchAllGrants'
 import { Grant } from '../network/types/models/Grant'
 import { colors } from '../ui/colors'
@@ -58,7 +60,6 @@ const createButton = css`
   color: ${colors.text.whitePrimary};
   font-weight: bold;
   border-radius: 8px;
-  width: 100%;
   font-size: 20px;
   padding: 12px;
   :hover {
@@ -73,6 +74,7 @@ const createButton = css`
 const Home: NextPage = () => {
   const wallet = useAnchorWallet()
   const [grants, setGrants] = useState<Grant[]>([])
+  const router = useRouter()
 
   useEffect(() => {
     ;(async () => {
@@ -90,7 +92,14 @@ const Home: NextPage = () => {
       <h1 className={heading}>Solana Ecosystem Grants</h1>
       <>
         <Spacers.Vertical._24px />
-        <button className={createButton}>Create Grant</button>
+        <button
+          onClick={() => {
+            router.push(urls.createGrant)
+          }}
+          className={createButton}
+        >
+          Create Grant
+        </button>
       </>
       <Spacers.Vertical._48px />
       <div className={grantsContainer}>
