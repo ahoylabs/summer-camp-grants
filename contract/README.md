@@ -1,5 +1,10 @@
 # ahoy-grants Solana program
 
+## Deployed program address
+
+ahoy-grants is deployed on devnet at:
+`HqyLxiVTCmsGvQSAddwFMDBimV5nszGBpZSzeJWj3nZ`.
+
 ## Requirements
 
 Install `nodejs`, `yarn`, and [Anchor Version Manager
@@ -45,3 +50,11 @@ $ solana-test-validator --bpf-program 4sN8PnN2ki2W4TFXAfzR645FWs8nimmsYeNtxM8RBK
 ```
 
 Then you can just run `yarn deploy` to deploy the grant program.
+
+### Storing the IDL on-chain
+
+```sh
+yarn anchor idl init --provider.cluster mainnet -f target/idl/ahoy_grants.json HqyLxiVTCmsGvQSAddwFMDBimV5nszGBpZSzeJWj3nZ
+```
+
+after deploying the program for the first time.
