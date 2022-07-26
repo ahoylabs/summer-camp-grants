@@ -2,19 +2,15 @@ import axios from 'axios'
 
 import { urls } from '../../constants/urls'
 import { ContentSHA256 } from '../types/ContentSHA256'
-import { compressImage } from './compressImage'
 import { ipfsCIDToContentSha256 } from './convertContentSha256'
 import { GrantForIPFS, PinataResponse, SubmissionForIPFS } from './types'
 
 export const pinFileToIPFS = async (
   imageFile: File | null,
-  type: 'grant' | 'submission',
 ): Promise<string | null> => {
   if (!imageFile) return Promise.resolve(null)
   const formData = new FormData()
-  const dimension = type === 'grant' ? 48 : 128
-  const compressedImage = await compressImage(imageFile, dimension, dimension)
-  formData.append('file', compressedImage)
+  formData.append('file', imageFile)
   const res = await axios.post(urls.api.pinFileToIPFS, formData)
   const data: PinataResponse = await res.data
   return data.IpfsHash
@@ -27,7 +23,7 @@ export const pinGrantToIPFS = async (
   websiteURL: string,
   imageFile: File | null,
 ): Promise<ContentSHA256> => {
-  const imageIpfsCID: string | null = await pinFileToIPFS(imageFile, 'grant')
+  const imageIpfsCID: string | null = await pinFileToIPFS(imageFile)
   const ipfsObj: GrantForIPFS = {
     companyName,
     description,
@@ -48,10 +44,7 @@ export const pinSubmissionToIPFS = async (
   title: string,
   imageFile: File | null,
 ): Promise<ContentSHA256> => {
-  const imageIpfsCID: string | null = await pinFileToIPFS(
-    imageFile,
-    'submission',
-  )
+  const imageIpfsCID: string | null = await pinFileToIPFS(imageFile)
   const ipfsObj: SubmissionForIPFS = {
     contact,
     description,
