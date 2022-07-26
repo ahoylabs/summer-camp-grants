@@ -1,5 +1,8 @@
 # Solana Summer Camp - Hackathon Grants
 
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg?style=flat-square)](https://opensource.org/licenses/Apache-2.0)
+[![twitter](https://img.shields.io/twitter/follow/ahoy_labs.svg?style=flat-square&logo=twitter&label=Follow%20Ahoy)](https://twitter.com/ahoy_labs)
+
 [![Solana Summer Camp Hackathon](https://raw.githubusercontent.com/ahoylabs/ahoy-grants/main/app/public/og_generic.png)](https://summercamp.ahoy.fund)
 
 A Solana program and interface for on-chain USDC grants. Built for the 2022 Solana Summer Camp Hackathon as a transparent mechanism for creating and awarding ecosystem grants.
