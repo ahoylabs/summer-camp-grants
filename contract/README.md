@@ -2,7 +2,7 @@
 
 ## Deployed program address
 
-ahoy-grants is deployed on devnet at:
+ahoy-grants is deployed on mainnet and devnet at:
 `HqyLxiVTCmsGvQSAddwFMDBimV5nszGBpZSzeJWj3nZ`.
 
 ## Requirements
