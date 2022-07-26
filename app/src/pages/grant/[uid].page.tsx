@@ -25,6 +25,7 @@ const headlineImage = css`
 `
 const headlineText = css`
   font-size: 48px;
+  line-height: 1.2;
   font-weight: bold;
   display: flex;
   flex-wrap: wrap;

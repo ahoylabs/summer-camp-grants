@@ -8,12 +8,15 @@ import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { mixed, object, SchemaOf, string } from 'yup'
 
+import { NEXT_PUBLIC_SOLANA_CLUSTER } from '../../__generated__/_env'
 import { ImageDropzone } from '../../components/ImageDropzone'
 import { Layout } from '../../components/Layout'
 import { Spacers } from '../../components/Spacers'
+import { BrandGithubSVG } from '../../components/svgs/BrandGithubSVG'
 import { ExternalLinkSVG } from '../../components/svgs/ExternalLinkSVG'
 import { WalletSVG } from '../../components/svgs/WalletSVG'
 import { urls } from '../../constants/urls'
+import { creatorWhitelist } from '../../creatorWhitelist'
 import { useConnectedWalletBalance } from '../../hooks/useConnectedWalletBalance'
 import { createGrant } from '../../network/rpc/createGrant'
 import { colors } from '../../ui/colors'
@@ -127,6 +130,19 @@ const noWalletCallout = css`
       color: ${colors.text.whitePrimary};
     }
   }
+  .github-link {
+    border: 1.5px solid ${colors.spot.green};
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    padding: 12px;
+    :hover {
+      background: ${colors.spot.green};
+      color: ${colors.text.whitePrimary};
+    }
+  }
 `
 
 const submitButton = css`
@@ -196,7 +212,31 @@ const CreateGrantPage: NextPage = () => {
     <Layout>
       <h1 className={heading}>Create Grant</h1>
       <Spacers.Vertical._48px />
-      {wallet ? (
+      {NEXT_PUBLIC_SOLANA_CLUSTER === 'mainnet' &&
+      wallet &&
+      !creatorWhitelist.find(
+        (i) => i.publicKey === wallet.publicKey.toBase58(),
+      ) ? (
+        <div className={noWalletCallout}>
+          <p>
+            In order to create, please add your wallet key to{' '}
+            <Spacers.Vertical._8px />
+            <a
+              className="github-link"
+              href="https://github.com/ahoylabs/summer-camp-grants"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <BrandGithubSVG width={24} />
+              <Spacers.Horizontal._8px />
+              the Whitelist in the the GitHub Repo
+            </a>
+          </p>
+          <Spacers.Vertical._16px />
+          <p>We do this in a effort to prevent spam</p>
+          <Spacers.Vertical._16px />
+        </div>
+      ) : wallet ? (
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}

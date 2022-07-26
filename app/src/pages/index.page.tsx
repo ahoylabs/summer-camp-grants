@@ -1,14 +1,12 @@
 import { useAnchorWallet } from '@solana/wallet-adapter-react'
 import { css } from 'linaria'
 import type { NextPage } from 'next'
-import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
 import { GrantCard } from '../components/GrantCard'
 import { Layout } from '../components/Layout'
 import { Spacers } from '../components/Spacers'
 import { SolanaSummerSVG } from '../components/svgs/SolanaSummerSVG'
-import { urls } from '../constants/urls'
 import { fetchAllGrants } from '../network/fetch/fetchAllGrants'
 import { Grant } from '../network/types/models/Grant'
 import { colors } from '../ui/colors'
@@ -55,24 +53,6 @@ const solanaSVGSty = css`
   }
 `
 
-const createButton = css`
-  background: ${colors.spot.green};
-  color: ${colors.text.whitePrimary};
-  font-weight: bold;
-  border-radius: 8px;
-  font-size: 20px;
-  line-height: 1.2;
-  text-align: center;
-  padding: 12px;
-  :hover {
-    background: ${colors.hover.green};
-  }
-  :disabled {
-    background: ${colors.bg.gray};
-    color: ${colors.text.blackSecondary};
-  }
-`
-
 const Home: NextPage = () => {
   const wallet = useAnchorWallet()
   const [grants, setGrants] = useState<Grant[] | 'loading'>('loading')
@@ -91,10 +71,6 @@ const Home: NextPage = () => {
       <SolanaSummerSVG width={500} className={solanaSVGSty} />
       <Spacers.Vertical._24px />
       <h1 className={heading}>Solana Ecosystem Grants</h1>
-      <Spacers.Vertical._24px />
-      <Link href={urls.createGrant}>
-        <a className={createButton}>Create Grant</a>
-      </Link>
       <Spacers.Vertical._48px />
       <div className={grantsContainer}>
         {grants === 'loading' ? (
