@@ -1,4 +1,4 @@
-# ahoy-grants Solana program
+# ahoy-grants Solana Program
 
 ## Deployed program address
 
@@ -19,8 +19,7 @@ Run `yarn` to install dependencies for the Javascript code. Instead of running
 are using the version of anchor selected in your environment.
 
 To get the program ID corresponding to `target/deploy/ahoy_grants-keypair.json`
-and generate that file if it does not already exist, run `yarn anchor keys
-list`. Set the value of `GRANT_PROGRAM_ID` in `env` to the printed program ID.
+and generate that file if it does not already exist, run `yarn anchor keys list`. Set the value of `GRANT_PROGRAM_ID` in `env` to the printed program ID.
 Run `source env` again to update that env var. Then you are ready to build,
 test, and deploy the program.
 
