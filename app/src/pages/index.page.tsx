@@ -75,7 +75,7 @@ const createButton = css`
 
 const Home: NextPage = () => {
   const wallet = useAnchorWallet()
-  const [grants, setGrants] = useState<Grant[]>([])
+  const [grants, setGrants] = useState<Grant[] | 'loading'>('loading')
 
   useEffect(() => {
     ;(async () => {
@@ -97,9 +97,11 @@ const Home: NextPage = () => {
       </Link>
       <Spacers.Vertical._48px />
       <div className={grantsContainer}>
-        {grants.map((g, i) => (
-          <GrantCard key={i} grant={g} />
-        ))}
+        {grants === 'loading' ? (
+          <div>Loading Grants...</div>
+        ) : (
+          grants.map((g, i) => <GrantCard key={i} grant={g} />)
+        )}
       </div>
     </Layout>
   )
