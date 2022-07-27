@@ -27,7 +27,7 @@ export const paySubmitter = async ({
     wallet.publicKey,
   )
 
-  await program.methods
+  const tx = await program.methods
     .paySubmission(new BN(convertUSDCToUnits(usdcToPay)))
     .accounts({
       grant: grantAccount,
@@ -37,4 +37,11 @@ export const paySubmitter = async ({
       payTo: submitterAssociatedTokenAccount,
     })
     .rpc()
+
+  const latestBlockHash = await connection.getLatestBlockhash()
+  await connection.confirmTransaction({
+    blockhash: latestBlockHash.blockhash,
+    lastValidBlockHeight: latestBlockHash.lastValidBlockHeight,
+    signature: tx,
+  })
 }

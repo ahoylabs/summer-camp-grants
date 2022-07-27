@@ -41,7 +41,7 @@ export const createSubmission = async ({
     wallet.publicKey,
   )
 
-  await program.methods
+  const tx = await program.methods
     .submit(contentSha256)
     .accounts({
       associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
@@ -54,6 +54,13 @@ export const createSubmission = async ({
     })
     .signers([submissionKeypair])
     .rpc()
+
+  const latestBlockHash = await connection.getLatestBlockhash()
+  await connection.confirmTransaction({
+    blockhash: latestBlockHash.blockhash,
+    lastValidBlockHeight: latestBlockHash.lastValidBlockHeight,
+    signature: tx,
+  })
 
   return submissionKeypair.publicKey
 }

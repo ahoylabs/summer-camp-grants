@@ -36,7 +36,7 @@ export const createGrant = async ({
   const associatedTokenAddress = await getUSDCAssociatedTokenAddress(
     wallet.publicKey,
   )
-  await program.methods
+  const tx = await program.methods
     .create(contentSha256)
     .accounts({
       // grant account
@@ -50,6 +50,14 @@ export const createGrant = async ({
     })
     .signers([grantKeypair])
     .rpc()
+
+  const latestBlockHash = await connection.getLatestBlockhash()
+  await connection.confirmTransaction({
+    blockhash: latestBlockHash.blockhash,
+    lastValidBlockHeight: latestBlockHash.lastValidBlockHeight,
+    signature: tx,
+  })
+
   await program.account.grant.fetch(grantKeypair.publicKey)
 
   return grantKeypair.publicKey
