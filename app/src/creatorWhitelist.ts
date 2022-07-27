@@ -15,6 +15,10 @@ export const creatorWhitelist: WhitelistItem[] = [
     company: 'Tulip',
     publicKey: '5hukfNCRxc5fF5wA6x8JCenmAAZCTq29TgGdZispWTQr',
   },
+  {
+    company: 'marginfi',
+    publicKey: '24sJKpUSabLMyv5Z4xdtMPe1spTj9r1t4JSa9PuHcZmH',
+  },
   // {
   //   company: 'Your Company',
   //   publicKey: 'Your Public Key'
