@@ -11,6 +11,10 @@ export const creatorWhitelist: WhitelistItem[] = [
     company: 'Ahoy',
     publicKey: '6iNaY6hQ2F9dUkXKTP8XiDcUUBGkWAp2rSuW8yVxTeiD',
   },
+  {
+    company: 'Tulip',
+    publicKey: 'DcE1QfuxsV9eoMydXXF7hBadHBRA1vPFqCWvAUeP9ZGB',
+  },
   // {
   //   company: 'Your Company',
   //   publicKey: 'Your Public Key'
