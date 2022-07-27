@@ -62,6 +62,7 @@ const verticalLine = css`
 
 const descriptionText = css`
   line-height: 1.4;
+  white-space: pre-line;
   a {
     color: ${colors.spot.green};
     :hover {
@@ -109,17 +110,27 @@ const urlRegex =
   /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/
 
 const parseDescription = (description: string) => {
-  const words = description.split(' ')
-  return words.map((w) => {
-    if (urlRegex.test(w)) {
-      return (
-        <a href={w} target="_blank" rel="noreferrer">
-          {w}
-        </a>
-      )
-    }
-    return `${w} `
-  })
+  const lines = description.split('\n')
+  return lines
+    .map((line) => {
+      const words = line.split(/\s+/)
+      return [
+        words.map((w) => {
+          if (urlRegex.test(w)) {
+            return (
+              <>
+                <a href={w} target="_blank" rel="noreferrer">
+                  {w}
+                </a>{' '}
+              </>
+            )
+          }
+          return `${w} `
+        }),
+        '\n',
+      ]
+    })
+    .flat()
 }
 
 const GrantPage: NextPage = () => {
