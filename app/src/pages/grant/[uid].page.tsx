@@ -62,6 +62,12 @@ const verticalLine = css`
 
 const descriptionText = css`
   line-height: 1.4;
+  a {
+    color: ${colors.spot.green};
+    :hover {
+      text-decoration: underline;
+    }
+  }
 `
 
 const h2Submissions = css`
@@ -99,6 +105,23 @@ const connectWalletToAddSubmitText = css`
   line-height: 1.4;
 `
 
+const urlRegex =
+  /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/
+
+const parseDescription = (description: string) => {
+  const words = description.split(' ')
+  return words.map((w) => {
+    if (urlRegex.test(w)) {
+      return (
+        <a href={w} target="_blank" rel="noreferrer">
+          {w}
+        </a>
+      )
+    }
+    return `${w} `
+  })
+}
+
 const GrantPage: NextPage = () => {
   const router = useRouter()
   const wallet = useAnchorWallet()
@@ -121,6 +144,8 @@ const GrantPage: NextPage = () => {
     initialAmountUSDC,
     publicKey,
   } = grant
+
+  const descriptionWithParsedURLs = parseDescription(description)
 
   return (
     <Layout>
@@ -173,7 +198,7 @@ const GrantPage: NextPage = () => {
         </a>
       </div>
       <Spacers.Vertical._32px />
-      <div className={descriptionText}>{description}</div>
+      <div className={descriptionText}>{descriptionWithParsedURLs}</div>
       <Spacers.Vertical._32px />
       <CurrentWalletBalanceCard
         usdcBalance={usdcBalance}
