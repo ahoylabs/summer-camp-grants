@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import React, { FC } from 'react'
 
-const description = 'Solana Super Camp Ecosystem Grants'
+const description = 'Solana Summer Camp Ecosystem Grants'
 
 /** A wrapper for the HTML page title
  *
