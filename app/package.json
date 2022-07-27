@@ -49,7 +49,7 @@
     "@ahoylabs/env-ts": "^0.1.2",
     "@bartekbp/typescript-checkstyle": "^5.0.0",
     "@types/formidable": "2.0.5",
-    "@types/node": "18.0.6",
+    "@types/node": "18.6.1",
     "@types/react": "18.0.15",
     "@types/react-dom": "18.0.6",
     "@typescript-eslint/eslint-plugin": "5.30.7",
