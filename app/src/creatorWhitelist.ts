@@ -13,7 +13,7 @@ export const creatorWhitelist: WhitelistItem[] = [
   },
   {
     company: 'Tulip',
-    publicKey: 'DcE1QfuxsV9eoMydXXF7hBadHBRA1vPFqCWvAUeP9ZGB',
+    publicKey: '5hukfNCRxc5fF5wA6x8JCenmAAZCTq29TgGdZispWTQr',
   },
   // {
   //   company: 'Your Company',
