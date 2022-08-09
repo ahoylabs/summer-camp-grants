@@ -9,7 +9,7 @@ type WhitelistItem = {
 export const creatorWhitelist: WhitelistItem[] = [
   {
     company: 'Ahoy',
-    publicKey: '29gQjvnnzD25sWANYyMvG87uDWp3K1h1zgwyYqpdjM6s',
+    publicKey: '6iNaY6hQ2F9dUkXKTP8XiDcUUBGkWAp2rSuW8yVxTeiD',
   },
   {
     company: 'Tulip',
