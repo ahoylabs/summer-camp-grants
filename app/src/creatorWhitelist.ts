@@ -19,6 +19,10 @@ export const creatorWhitelist: WhitelistItem[] = [
     company: 'marginfi',
     publicKey: '24sJKpUSabLMyv5Z4xdtMPe1spTj9r1t4JSa9PuHcZmH',
   },
+  {
+    company: 'Ahoy2',
+    publicKey: '7mU8DJXZr2u5TuLnePaKGnPUfyfTwf7YspugZyK2pQEA'
+  }
   // {
   //   company: 'Your Company',
   //   publicKey: 'Your Public Key'
