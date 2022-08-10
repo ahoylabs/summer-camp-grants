@@ -1,6 +1,5 @@
 import * as anchor from "@project-serum/anchor";
 import { Program } from "@project-serum/anchor";
-import * as token from "@solana/spl-token";
 
 import {
   IDL as SplTokenFaucetIDL,
