@@ -12,6 +12,7 @@ declare_id!("1212121212121212121212121212121212121212121");
 
 // This is particularly nice to include since explorer.solana.com picks it up and shows the info in
 // the UI.
+#[cfg(not(feature = "no-entrypoint"))]
 security_txt! {
     name: "Ahoy Grants",
     project_url: "https://summercamp.ahoy.fund",
